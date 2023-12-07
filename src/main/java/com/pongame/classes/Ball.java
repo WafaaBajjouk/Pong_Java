@@ -1,5 +1,7 @@
 package com.pongame.classes;
 
+import com.pongame.config.DifficultyLevel;
+
 import java.awt.*;
 
 public class Ball {
@@ -9,12 +11,12 @@ public class Ball {
     private int xSpeed;
     private int ySpeed;
 
-    public Ball(int x, int y, int diameter, int xSpeed, int ySpeed) {
+    public Ball(int x, int y, int diameter, int xSpeed, int ySpeed , DifficultyLevel difficulty) {
         this.x = x;
         this.y = y;
         this.diameter = diameter;
-        this.xSpeed = xSpeed;
-        this.ySpeed = ySpeed;
+        this.xSpeed = difficulty.getSpeed();
+        this.ySpeed = difficulty.getSpeed();
     }
 
     public void move() {
@@ -26,6 +28,19 @@ public class Ball {
         g.setColor(Color.RED);
         g.fillOval(x, y, diameter, diameter);
     }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, diameter, diameter);
+    }
+
+    public void reverseXDirection() {
+        xSpeed = -xSpeed;
+    }
+
+    public void reverseYDirection() {
+        ySpeed = -ySpeed;
+    }
+
 
     //getters & setters
 

@@ -1,8 +1,10 @@
 package com.pongame.classes;
 
+import com.pongame.utils.Constants;
+
 import java.awt.*;
 
-class Paddle {
+public class Paddle {
     public static final int WIDTH = 20;
     public static final int HEIGHT = 100;
     private int x;
@@ -22,7 +24,23 @@ class Paddle {
 
     }
 
+    public void moveUp() {
+        y -= 5; // to Adjust
+        if (y < 0) {
+            y = 0;
+        }
+    }
 
+    public void moveDown() {
+        y += 5; // to Adjust
+        if (y + HEIGHT > Constants.WINDOW_HEIGHT) {
+            y = Constants.WINDOW_HEIGHT - HEIGHT;
+        }
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, WIDTH, HEIGHT);
+    }
 
     // Getters and setters
 
