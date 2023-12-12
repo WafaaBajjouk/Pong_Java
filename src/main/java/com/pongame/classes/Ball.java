@@ -11,7 +11,7 @@ public class Ball {
     private int xSpeed;
     private int ySpeed;
 
-    public Ball(int x, int y, int diameter, int xSpeed, int ySpeed , DifficultyLevel difficulty) {
+    public Ball(int x, int y, int diameter, DifficultyLevel difficulty) {
         this.x = x;
         this.y = y;
         this.diameter = diameter;
