@@ -8,6 +8,8 @@ public class Ball {
     private int x;
     private int y;
     private int diameter;
+    private static final Color BALL_COLOR = Color.RED;
+
     private int xSpeed;
     private int ySpeed;
 
@@ -25,7 +27,7 @@ public class Ball {
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.RED);
+        g.setColor(BALL_COLOR);
         g.fillOval(x, y, diameter, diameter);
     }
 
@@ -33,10 +35,13 @@ public class Ball {
         return new Rectangle(x, y, diameter, diameter);
     }
 
+//    Reverses the direction of the ball along the x-axis.
+
     public void reverseXDirection() {
         xSpeed = -xSpeed;
     }
 
+//    Reverses the direction of the ball along the y-axis.
     public void reverseYDirection() {
         ySpeed = -ySpeed;
     }

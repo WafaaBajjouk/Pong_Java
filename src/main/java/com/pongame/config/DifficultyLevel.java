@@ -1,6 +1,8 @@
 package com.pongame.config;
 
 public enum DifficultyLevel {
+
+//    Each level has an associated speed value
     SLOW(2),
     MEDIUM(5),
     FAST(8);
