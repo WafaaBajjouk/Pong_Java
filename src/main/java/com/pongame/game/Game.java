@@ -28,6 +28,10 @@ public class Game {
     }
 
     public static Game getInstance() {
+
+//        herrre signleton design pattern :ensuring that there is only one instance of the Game class.
+//        This is achieved through the private constructor and the getInstance method,
+//        which creates a new instance only if one does not already exist.
         if (instance == null) {
             instance = new Game();
         }
