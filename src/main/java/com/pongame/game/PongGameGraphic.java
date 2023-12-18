@@ -57,4 +57,8 @@ class GamePanel extends JPanel {
         g.fillRect(paddle1.getX(), paddle1.getY(), Paddle.WIDTH, Paddle.HEIGHT);
         g.fillRect(paddle2.getX(), paddle2.getY(), Paddle.WIDTH, Paddle.HEIGHT);
     }
+
+    // BALL movements
+
 }
+

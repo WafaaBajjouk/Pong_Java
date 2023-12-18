@@ -39,6 +39,7 @@ public class Game {
         }
 
 
+
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
