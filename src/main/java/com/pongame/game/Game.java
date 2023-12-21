@@ -6,125 +6,131 @@ import com.pongame.config.DifficultyLevel;
 import com.pongame.patterns.Observer;
 import com.pongame.utils.Constants;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-
-public class Game {
+public class Game  {
     private static Game instance;
 
     private Ball ball;
     private Paddle paddle1;
     private Paddle paddle2;
     private List<Observer> observers;
+    private DifficultyLevel difficultyLevel;
 
-    private Game() {
+    private Game(DifficultyLevel difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
         // Initialize game components
-        ball = new Ball(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2, 20, DifficultyLevel.MEDIUM);
-        paddle1 = new Paddle(0, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2);
-        paddle2 = new Paddle(Constants.WINDOW_WIDTH - Paddle.WIDTH, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2);
+        this.ball = new Ball(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2, 20, this.difficultyLevel);
+        this.paddle1 = new Paddle(0, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2);
+        this.paddle2 = new Paddle(Constants.WINDOW_WIDTH - Paddle.WIDTH, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2);
 
+        System.out.println("Ball X: " + this.ball.getX() + " Y: " + this.ball.getY());
+        System.out.println("Paddle 1  X: " + this.paddle1.getX() + " - Y :" + this.paddle1.getY());
+        System.out.println("Paddle 2  X: " + this.paddle2.getX() + " - Y :" + this.paddle2.getY());
         // Initialize observers list
-        observers = new ArrayList<>();
+        this.observers = new ArrayList<>();
     }
 
-
-//        herrre signleton design pattern :ensuring that there is only one instance of the Game class.
-//        This is achieved through the private constructor and the getInstance method,
-//        which creates a new instance only if one does not already exist.
-        public static synchronized Game getInstance() {
-            if (instance == null) {
-                instance = new Game();
-            }
-            return instance;
+    // Singleton design pattern: ensuring that there is only one instance of the Game class.
+    // This is achieved through the private constructor and the getInstance method,
+    // which creates a new instance only if one does not already exist.
+    public static synchronized Game getInstance(DifficultyLevel difficultyLevel) {
+        System.out.println("from game class " + difficultyLevel);
+        if (instance == null) {
+            instance = new Game(difficultyLevel);
         }
-
-
+        return instance;
+    }
 
     public void addObserver(Observer observer) {
-        observers.add(observer);
+        this.observers.add(observer);
     }
 
     public void removeObserver(Observer observer) {
-        observers.remove(observer);
+        this.observers.remove(observer);
     }
 
     public void registerObserver(Observer observer) {
-        addObserver(observer);
-
+        this.addObserver(observer);
     }
 
     public void notifyObservers() {
-        for (Observer observer : observers) {
+        for (Observer observer : this.observers) {
             observer.update();
         }
     }
 
     public void notifyObserversWithGameState() {
-        for (Observer observer : observers) {
+        for (Observer observer : this.observers) {
             observer.updateGameInfo(this.getBall(), this.getPaddle1(), this.getPaddle2());
         }
     }
 
     public void updateGame() {
-        ball.move();
-        paddle1.followBall(ball);
-        handleCollisions();
-        notifyObservers();
+        this.ball.move();
+        this.paddle1.followBall(this.ball);
+        this.handleCollisions();
+        this.notifyObservers();
     }
 
     public void setBallPosition(int x, int y) {
         // Set the ball's position directly
-        ball.setX(x);
-        ball.setY(y);
+        this.ball.setX(x);
+        this.ball.setY(y);
     }
 
     private void handleCollisions() {
         // collision with paddle1
-        if (ball.getBounds().intersects(paddle1.getBounds())) {
-            ball.reverseXDirection();
+        if (this.ball.getBounds().intersects(this.paddle1.getBounds())) {
+            this.ball.reverseXDirection();
         }
-        //  collision with paddle2
-        if (ball.getBounds().intersects(paddle2.getBounds())) {
-            ball.reverseXDirection();
+        // collision with paddle2
+        if (this.ball.getBounds().intersects(this.paddle2.getBounds())) {
+            this.ball.reverseXDirection();
         }
         // collision with top and bottom walls
-        if (ball.getY() <= 0 || ball.getY() + ball.getDiameter() >= Constants.WINDOW_HEIGHT) {
-            ball.reverseYDirection();
+        if (this.ball.getY() <= 0 || this.ball.getY() + this.ball.getDiameter() >= Constants.WINDOW_HEIGHT) {
+            this.ball.reverseYDirection();
         }
-        //  if the ball goes off the left or right edge= reset the ball's position.
-        if (ball.getX() + ball.getDiameter() <= 0 || ball.getX() >= Constants.WINDOW_WIDTH) {
+        // if the ball goes off the left or right edge= reset the ball's position.
+        if (this.ball.getX() + this.ball.getDiameter() <= 0 || this.ball.getX() >= Constants.WINDOW_WIDTH) {
             // Reset the ball to the center
-            ball.setX(Constants.WINDOW_WIDTH / 2 - ball.getDiameter() / 2);
-            ball.setY(Constants.WINDOW_HEIGHT / 2 - ball.getDiameter() / 2);
+            this.ball.setX(Constants.WINDOW_WIDTH / 2 - this.ball.getDiameter() / 2);
+            this.ball.setY(Constants.WINDOW_HEIGHT / 2 - this.ball.getDiameter() / 2);
         }
     }
 
     public void movePaddle1Up() {
-        paddle1.moveUp();
+        this.paddle1.moveUp();
     }
 
     public void movePaddle1Down() {
-        paddle1.moveDown();
+        this.paddle1.moveDown();
     }
 
     public void movePaddle2Up() {
-        paddle2.moveUp();
+        this.paddle2.moveUp();
     }
 
     public void movePaddle2Down() {
-        paddle2.moveDown();
+        this.paddle2.moveDown();
     }
 
     // Getters for game components
     public Ball getBall() {
-        return ball;
+        return this.ball;
     }
 
     public Paddle getPaddle1() {
-        return paddle1;
+        return this.paddle1;
     }
 
     public Paddle getPaddle2() {
-        return paddle2;
+        return this.paddle2;
+    }
+
+    public DifficultyLevel getDifficultyLevel() {
+        return this.difficultyLevel;
     }
 }
