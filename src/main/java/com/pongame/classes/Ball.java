@@ -17,8 +17,8 @@ public class Ball {
         this.x = x;
         this.y = y;
         this.diameter = diameter;
-        this.xSpeed = difficulty.getSpeed();
-        this.ySpeed = difficulty.getSpeed();
+        this.xSpeed = difficulty.getBallSpeed();
+        this.ySpeed = difficulty.getBallSpeed();
     }
 
     public void move() {
@@ -35,20 +35,21 @@ public class Ball {
         return new Rectangle(x, y, diameter, diameter);
     }
 
-//    Reverses the direction of the ball along the x-axis.
 
+//    NOTE :
+//    separates the speed along the x-axis (xSpeed) and y-axis (ySpeed),
+//    allowing more flexibility in controlling the ball's movement.
+    // Reverses the direction of the ball along the x-axis.
     public void reverseXDirection() {
         xSpeed = -xSpeed;
     }
 
-//    Reverses the direction of the ball along the y-axis.
+    // Reverses the direction of the ball along the y-axis.
     public void reverseYDirection() {
         ySpeed = -ySpeed;
     }
 
-
-    //getters & setters
-
+    // Getters & setters...
 
     public int getX() {
         return x;
@@ -90,5 +91,3 @@ public class Ball {
         this.ySpeed = ySpeed;
     }
 }
-
-

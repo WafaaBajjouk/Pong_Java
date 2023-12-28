@@ -1,19 +1,23 @@
 package com.pongame.config;
 
 public enum DifficultyLevel {
+    SLOW(3, 3),    // Ball speed, Paddle speed
+    MEDIUM(4, 6),
+    FAST(5, 10);
 
-//    Each level has an associated speed value
-    SLOW(2),
-    MEDIUM(5),
-    FAST(8);
+    private final int ballSpeed;
+    private final int paddleSpeed;
 
-    private final int speed;
-
-    DifficultyLevel(int speed) {
-        this.speed = speed;
+    DifficultyLevel(int ballSpeed, int paddleSpeed) {
+        this.ballSpeed = ballSpeed;
+        this.paddleSpeed = paddleSpeed;
     }
 
-    public int getSpeed() {
-        return speed;
+    public int getBallSpeed() {
+        return this.ballSpeed;
+    }
+
+    public int getPaddleSpeed() {
+        return this.paddleSpeed;
     }
 }

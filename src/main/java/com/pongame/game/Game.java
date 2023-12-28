@@ -13,6 +13,9 @@ public class Game  {
     private static Game instance;
 
     private Ball ball;
+    private boolean gameActive = true;
+
+    private int paddleSpeed;
     private Paddle paddle1;
     private Paddle paddle2;
     private List<Observer> observers;
@@ -21,9 +24,12 @@ public class Game  {
     private Game(DifficultyLevel difficultyLevel) {
         this.difficultyLevel = difficultyLevel;
         // Initialize game components
-        this.ball = new Ball(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2, 20, this.difficultyLevel);
-        this.paddle1 = new Paddle(0, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2);
-        this.paddle2 = new Paddle(Constants.WINDOW_WIDTH - Paddle.WIDTH, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2);
+        this.ball = new Ball(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2,
+                20, this.difficultyLevel);
+        this.paddle1 = new Paddle(0, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2,this.difficultyLevel);
+        this.paddle2 = new Paddle(Constants.WINDOW_WIDTH - Paddle.WIDTH,
+                Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, this.difficultyLevel);
+
 
         System.out.println("Ball X: " + this.ball.getX() + " Y: " + this.ball.getY());
         System.out.println("Paddle 1  X: " + this.paddle1.getX() + " - Y :" + this.paddle1.getY());
@@ -74,6 +80,7 @@ public class Game  {
         this.notifyObservers();
     }
 
+
     public void setBallPosition(int x, int y) {
         // Set the ball's position directly
         this.ball.setX(x);
@@ -102,21 +109,20 @@ public class Game  {
     }
 
     public void movePaddle1Up() {
-        this.paddle1.moveUp();
+        this.paddle1.moveUp(paddleSpeed);
     }
 
     public void movePaddle1Down() {
-        this.paddle1.moveDown();
+        this.paddle1.moveDown(paddleSpeed);
     }
 
     public void movePaddle2Up() {
-        this.paddle2.moveUp();
+        this.paddle2.moveUp(paddleSpeed);
     }
 
     public void movePaddle2Down() {
-        this.paddle2.moveDown();
+        this.paddle2.moveDown(paddleSpeed);
     }
-
     // Getters for game components
     public Ball getBall() {
         return this.ball;
@@ -133,4 +139,13 @@ public class Game  {
     public DifficultyLevel getDifficultyLevel() {
         return this.difficultyLevel;
     }
+
+    public boolean isGameActive() {
+        return this.gameActive;
+    }
+
+    public void setGameActive(boolean gameActive) {
+        this.gameActive = gameActive;
+    }
+
 }

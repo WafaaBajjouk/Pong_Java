@@ -1,5 +1,6 @@
 package com.pongame.classes;
 
+import com.pongame.config.DifficultyLevel;
 import com.pongame.utils.Constants;
 
 import java.awt.*;
@@ -10,7 +11,10 @@ public class Paddle {
     private int x;
     private int y;
 
-    public Paddle(int x, int y) {
+    private int speed;
+
+    public Paddle(int x, int y, DifficultyLevel difficultyLevel) {
+        this.speed= 3* difficultyLevel.getPaddleSpeed();
         this.x = x;
         this.y = y;
     }
@@ -23,16 +27,15 @@ public class Paddle {
     public void followBall(Ball ball) {
 
     }
-
-    public void moveUp() {
-        y -= 5; // to Adjust
+    public void moveUp(int speed) {
+        y -= this.speed;
         if (y < 0) {
             y = 0;
         }
     }
 
-    public void moveDown() {
-        y += 5; // to Adjust
+    public void moveDown(int speed) {
+        y += this.speed;
         if (y + HEIGHT > Constants.WINDOW_HEIGHT) {
             y = Constants.WINDOW_HEIGHT - HEIGHT;
         }
