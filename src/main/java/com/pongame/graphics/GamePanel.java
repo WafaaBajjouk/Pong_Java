@@ -17,12 +17,9 @@ class GamePanel extends JPanel implements KeyListener {
     private final Game game;
     private ScoreManager scoreManager;
 
-
     public GamePanel(Game game) {
         this.game = game;
         this.scoreManager = ScoreManager.getInstance();
-
-        System.out.println("from game panel :" + game.getDifficultyLevel());
         setFocusable(true);
         addKeyListener(this);
 
@@ -40,17 +37,25 @@ class GamePanel extends JPanel implements KeyListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (game.isGameActive()) {
-            // Draw game components
-            Ball ball = game.getBall();
-            g.setColor(Color.RED);
-            g.fillOval(ball.getX(), ball.getY(), ball.getDiameter(), ball.getDiameter());
+        // Set black background
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, getWidth(), getHeight());
 
+        if (game.isGameActive()) {
+            // Draw middle line
+            g.setColor(Color.WHITE);
+            g.fillRect(getWidth() / 2 - Constants.LINE_WIDTH / 2, 0, Constants.LINE_WIDTH, getHeight());
+
+            // Draw paddles
             Paddle paddle1 = game.getPaddle1();
             Paddle paddle2 = game.getPaddle2();
-            g.setColor(Color.BLUE);
+            g.setColor(Color.WHITE);
             g.fillRect(paddle1.getX(), paddle1.getY(), Paddle.WIDTH, Paddle.HEIGHT);
             g.fillRect(paddle2.getX(), paddle2.getY(), Paddle.WIDTH, Paddle.HEIGHT);
+
+            // Draw ball
+            Ball ball = game.getBall();
+            g.fillOval(ball.getX(), ball.getY(), ball.getDiameter(), ball.getDiameter());
 
             // Display scores
             displayScores(g);
@@ -62,19 +67,19 @@ class GamePanel extends JPanel implements KeyListener {
 
     private void displayScores(Graphics g) {
         // Display scores on the screen
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Player 1 Score: " + scoreManager.getPlayer1Score(), 50, 50);
-        g.drawString("Player 2 Score: " + scoreManager.getPlayer2Score(), 50, 80);
+        g.drawString("Player 1: " + scoreManager.getPlayer1Score(), 50, 30);
+        g.drawString("Player 2: " + scoreManager.getPlayer2Score(), getWidth() - 150, 30);
     }
 
     private void displayScoreScreen(Graphics g) {
         // Display scores on the score screen
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Player 1 Score: " + scoreManager.getPlayer1Score(), 50, 100);
-        g.drawString("Player 2 Score: " + scoreManager.getPlayer2Score(), 50, 150);
-        g.drawString("Game Over! Press R to restart.", 50, 200);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.drawString("Player 1: " + scoreManager.getPlayer1Score(), getWidth() / 2 - 150, getHeight() / 2 - 50);
+        g.drawString("Player 2: " + scoreManager.getPlayer2Score(), getWidth() / 2 - 150, getHeight() / 2 + 50);
+        g.drawString("Game Over! Press R to restart.", getWidth() / 2 - 220, getHeight() / 2 + 150);
     }
 
     // Implement KeyListener methods
