@@ -21,6 +21,9 @@ public class Game  {
     private List<Observer> observers;
     private DifficultyLevel difficultyLevel;
 
+    private ScoreManager scoreManager;
+
+
     private Game(DifficultyLevel difficultyLevel) {
         this.difficultyLevel = difficultyLevel;
         // Initialize game components
@@ -36,6 +39,9 @@ public class Game  {
         System.out.println("Paddle 2  X: " + this.paddle2.getX() + " - Y :" + this.paddle2.getY());
         // Initialize observers list
         this.observers = new ArrayList<>();
+
+        this.scoreManager = ScoreManager.getInstance();
+
     }
 
     // Singleton design pattern: ensuring that there is only one instance of the Game class.
@@ -91,20 +97,36 @@ public class Game  {
         // collision with paddle1
         if (this.ball.getBounds().intersects(this.paddle1.getBounds())) {
             this.ball.reverseXDirection();
+            System.out.println("Score Player 1 :" + this.scoreManager.getPlayer1Score());
+            System.out.println("Score Player 2 :" + this.scoreManager.getPlayer2Score());
         }
         // collision with paddle2
         if (this.ball.getBounds().intersects(this.paddle2.getBounds())) {
             this.ball.reverseXDirection();
+            System.out.println("Score Player 1 :" + this.scoreManager.getPlayer1Score());
+            System.out.println("Score Player 2 :" + this.scoreManager.getPlayer2Score());
         }
         // collision with top and bottom walls
         if (this.ball.getY() <= 0 || this.ball.getY() + this.ball.getDiameter() >= Constants.WINDOW_HEIGHT) {
             this.ball.reverseYDirection();
+            System.out.println("Score Player 1 :" + this.scoreManager.getPlayer1Score());
+            System.out.println("Score Player 2 :" + this.scoreManager.getPlayer2Score());
         }
-        // if the ball goes off the left or right edge= reset the ball's position.
+        // if the ball goes off the left or right edge = reset the ball's position.
         if (this.ball.getX() + this.ball.getDiameter() <= 0 || this.ball.getX() >= Constants.WINDOW_WIDTH) {
+            // Update scores when the ball goes off the edges
+            if (this.ball.getX() + this.ball.getDiameter() <= 0) {
+                this.scoreManager.player2Scores();
+            } else {
+                this.scoreManager.player1Scores();
+            }
+
             // Reset the ball to the center
             this.ball.setX(Constants.WINDOW_WIDTH / 2 - this.ball.getDiameter() / 2);
             this.ball.setY(Constants.WINDOW_HEIGHT / 2 - this.ball.getDiameter() / 2);
+
+            // Notify observers with updated scores
+            this.notifyObserversWithGameState();
         }
     }
 
