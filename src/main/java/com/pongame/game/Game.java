@@ -14,6 +14,7 @@ public class Game  {
 
     private Ball ball;
     private boolean gameActive = true;
+    private static final int WINNING_SCORE = 3;
 
     private int paddleSpeed;
     private Paddle paddle1;
@@ -94,23 +95,22 @@ public class Game  {
     }
 
     private void handleCollisions() {
+        // Check if the game has already ended
+        if (!gameActive) {
+            return;
+        }
+
         // collision with paddle1
         if (this.ball.getBounds().intersects(this.paddle1.getBounds())) {
             this.ball.reverseXDirection();
-            System.out.println("Score Player 1 :" + this.scoreManager.getPlayer1Score());
-            System.out.println("Score Player 2 :" + this.scoreManager.getPlayer2Score());
         }
         // collision with paddle2
         if (this.ball.getBounds().intersects(this.paddle2.getBounds())) {
             this.ball.reverseXDirection();
-            System.out.println("Score Player 1 :" + this.scoreManager.getPlayer1Score());
-            System.out.println("Score Player 2 :" + this.scoreManager.getPlayer2Score());
         }
         // collision with top and bottom walls
         if (this.ball.getY() <= 0 || this.ball.getY() + this.ball.getDiameter() >= Constants.WINDOW_HEIGHT) {
             this.ball.reverseYDirection();
-            System.out.println("Score Player 1 :" + this.scoreManager.getPlayer1Score());
-            System.out.println("Score Player 2 :" + this.scoreManager.getPlayer2Score());
         }
         // if the ball goes off the left or right edge = reset the ball's position.
         if (this.ball.getX() + this.ball.getDiameter() <= 0 || this.ball.getX() >= Constants.WINDOW_WIDTH) {
@@ -127,9 +127,28 @@ public class Game  {
 
             // Notify observers with updated scores
             this.notifyObserversWithGameState();
+
+            // Check for a winning condition reaching 10 pts in score
+            if (this.scoreManager.getPlayer1Score() >= WINNING_SCORE || this.scoreManager.getPlayer2Score() >= WINNING_SCORE) {
+                this.endGame();
+                this.notifyObserversWithGameState();
+            }
         }
     }
 
+
+    private void endGame() {
+        this.gameActive = false;
+        this.displayWinner();
+    }
+
+    private void displayWinner() {
+        if (this.scoreManager.getPlayer1Score() >= WINNING_SCORE) {
+            System.out.println("Player 1 wins!");
+        } else {
+            System.out.println("Player 2 wins!");
+        }
+    }
     public void movePaddle1Up() {
         this.paddle1.moveUp(paddleSpeed);
     }
