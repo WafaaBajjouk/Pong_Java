@@ -44,4 +44,13 @@ public class ScoreManager {
         this.player1Score = 0;
         this.player2Score = 0;
     }
+
+
+    public void setPlayer1Score(int player1Score) {
+        this.player1Score = player1Score;
+    }
+
+    public void setPlayer2Score(int player2Score) {
+        this.player2Score = player2Score;
+    }
 }

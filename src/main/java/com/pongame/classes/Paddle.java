@@ -41,9 +41,16 @@ public class Paddle {
         }
     }
 
+    public void reset() {        // Reset the paddle to its initial position
+        this.x = Constants.INITIAL_PADDLE_X;
+        this.y = Constants.INITIAL_PADDLE_Y;
+    }
+
     public Rectangle getBounds() {
         return new Rectangle(x, y, WIDTH, HEIGHT);
     }
+
+
 
     // Getters and setters
 

@@ -1,6 +1,7 @@
 package com.pongame.classes;
 
 import com.pongame.config.DifficultyLevel;
+import com.pongame.utils.Constants;
 
 import java.awt.*;
 
@@ -13,10 +14,13 @@ public class Ball {
     private int xSpeed;
     private int ySpeed;
 
-    public Ball(int x, int y, int diameter, DifficultyLevel difficulty) {
-        this.x = x;
-        this.y = y;
-        this.diameter = diameter;
+    private DifficultyLevel difficulty;
+
+    public Ball(  DifficultyLevel  difficulty) {
+//        INITIALE STATE OF THE BALL IS IN THE CENTRE
+        this.x = Constants.WINDOW_WIDTH / 2 - this.diameter / 2;
+        this.y = Constants.WINDOW_HEIGHT / 2 - this.diameter / 2;
+        this.diameter = Constants.BALL_DIAMETERE;
         this.xSpeed = difficulty.getBallSpeed();
         this.ySpeed = difficulty.getBallSpeed();
     }
@@ -36,7 +40,7 @@ public class Ball {
     }
 
 
-//    NOTE :
+    //    NOTE :
 //    separates the speed along the x-axis (xSpeed) and y-axis (ySpeed),
 //    allowing more flexibility in controlling the ball's movement.
     // Reverses the direction of the ball along the x-axis.
@@ -48,6 +52,15 @@ public class Ball {
     public void reverseYDirection() {
         ySpeed = -ySpeed;
     }
+
+    public void reset() {
+        // Reset the ball to the center
+        this.x = Constants.WINDOW_WIDTH / 2 - this.diameter / 2;
+        this.y = Constants.WINDOW_HEIGHT / 2 - this.diameter / 2;
+        this.xSpeed = difficulty.getBallSpeed();
+        this.ySpeed = difficulty.getBallSpeed();
+    }
+
 
     // Getters & setters...
 

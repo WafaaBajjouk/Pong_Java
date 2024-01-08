@@ -3,18 +3,21 @@ package com.pongame.game;
 import com.pongame.classes.Ball;
 import com.pongame.classes.Paddle;
 import com.pongame.config.DifficultyLevel;
+import com.pongame.graphics.HomePage;
 import com.pongame.patterns.Observer;
 import com.pongame.utils.Constants;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-public class Game  {
-    private static Game instance;
+
+import static com.pongame.utils.Constants.WINNING_SCORE;
+
+public class Game {
+   private static Game instance; //  holds the single instance  to imp singleton
 
     private Ball ball;
     private boolean gameActive = true;
-    private static final int WINNING_SCORE = 3;
 
     private int paddleSpeed;
     private Paddle paddle1;
@@ -24,30 +27,44 @@ public class Game  {
 
     private ScoreManager scoreManager;
 
+    private HomePage mainMenu;
 
+    private boolean gamePaused = false;
+    private boolean pausedOnce = false;
+
+    private int[] savedScores = new int[2];
+    private int savedPaddleSpeed;
+    private int savedBallX;
+    private int savedBallY;
+    private int savedPaddle1Y;
+    private int savedPaddle2Y;
+
+
+
+//    using dependency injection by passing instance difficultyLevel
     private Game(DifficultyLevel difficultyLevel) {
+
+//        FOR SIGNLETON IMPLEMENTATION :  private constructor preventing external classes from directly creating instances of
+//        the Game class.
         this.difficultyLevel = difficultyLevel;
         // Initialize game components
-        this.ball = new Ball(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT / 2,
-                20, this.difficultyLevel);
-        this.paddle1 = new Paddle(0, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2,this.difficultyLevel);
+
+        this.ball = new Ball(this.difficultyLevel);
+        this.paddle1 = new Paddle(0, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, this.difficultyLevel);
         this.paddle2 = new Paddle(Constants.WINDOW_WIDTH - Paddle.WIDTH,
                 Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, this.difficultyLevel);
 
 
-        System.out.println("Ball X: " + this.ball.getX() + " Y: " + this.ball.getY());
-        System.out.println("Paddle 1  X: " + this.paddle1.getX() + " - Y :" + this.paddle1.getY());
-        System.out.println("Paddle 2  X: " + this.paddle2.getX() + " - Y :" + this.paddle2.getY());
+
         // Initialize observers list
         this.observers = new ArrayList<>();
 
         this.scoreManager = ScoreManager.getInstance();
-
     }
 
-    // Singleton design pattern: ensuring that there is only one instance of the Game class.
-    // This is achieved through the private constructor and the getInstance method,
-    // which creates a new instance only if one does not already exist.
+
+    // Singleton instance creation with dependency injection
+
     public static synchronized Game getInstance(DifficultyLevel difficultyLevel) {
         System.out.println("from game class " + difficultyLevel);
         if (instance == null) {
@@ -81,17 +98,51 @@ public class Game  {
     }
 
     public void updateGame() {
-        this.ball.move();
-        this.paddle1.followBall(this.ball);
-        this.handleCollisions();
-        this.notifyObservers();
+        if (!gamePaused) {
+            this.ball.move();
+            this.paddle1.followBall(this.ball);
+            this.handleCollisions();
+            this.notifyObservers();
+        }
     }
 
+    private void saveGameState() {
+        savedScores[0] = this.scoreManager.getPlayer1Score();
+        savedScores[1] = this.scoreManager.getPlayer2Score();
+        savedPaddleSpeed = this.paddleSpeed;
+        savedBallX = this.ball.getX();
+        savedBallY = this.ball.getY();
+        savedPaddle1Y = this.paddle1.getY();
+        savedPaddle2Y = this.paddle2.getY();
+    }
 
-    public void setBallPosition(int x, int y) {
-        // Set the ball's position directly
-        this.ball.setX(x);
-        this.ball.setY(y);
+    public void pauseGame() {
+        this.gamePaused = !this.gamePaused;
+        if (!pausedOnce && gamePaused) {
+            // Save the initial state when pausing for the first time
+            pausedOnce = true;
+            saveGameState();
+        }
+    }
+
+    public void restartFromPause() {
+        // Restore the state to the saved state
+        this.scoreManager.setPlayer1Score(savedScores[0]);
+        this.scoreManager.setPlayer2Score(savedScores[1]);
+        this.paddleSpeed = savedPaddleSpeed;
+        this.ball.setX(savedBallX);
+        this.ball.setY(savedBallY);
+        this.paddle1.setY(savedPaddle1Y);
+        this.paddle2.setY(savedPaddle2Y);
+
+        // Reset the pausedOnce flag
+        pausedOnce = false;
+
+        // Resume the game
+        this.gamePaused = false;
+
+        // Notify observers with the resumed game state
+        this.notifyObserversWithGameState();
     }
 
     private void handleCollisions() {
@@ -129,13 +180,12 @@ public class Game  {
             this.notifyObserversWithGameState();
 
             // Check for a winning condition reaching 10 pts in score
-            if (this.scoreManager.getPlayer1Score() >= WINNING_SCORE || this.scoreManager.getPlayer2Score() >= WINNING_SCORE) {
+            if (this.scoreManager.getPlayer1Score() >= Constants.WINNING_SCORE || this.scoreManager.getPlayer2Score() >= WINNING_SCORE) {
                 this.endGame();
                 this.notifyObserversWithGameState();
             }
         }
     }
-
 
     private void endGame() {
         this.gameActive = false;
@@ -149,6 +199,31 @@ public class Game  {
             System.out.println("Player 2 wins!");
         }
     }
+
+    public void restartGame() {
+        this.gameActive = true;
+        this.pausedOnce = false; // Reset the flag when restarting the game
+        this.scoreManager.resetScores(); // Reset scores if necessary
+
+        // Reset ball position
+        this.ball.setX(Constants.WINDOW_WIDTH / 2 - this.ball.getDiameter() / 2);
+        this.ball.setY(Constants.WINDOW_HEIGHT / 2 - this.ball.getDiameter() / 2);
+
+        // Reset paddle positions
+        this.paddle1.reset();
+        this.paddle2.reset();
+
+        // Notify observers with the reset game state
+        this.notifyObserversWithGameState();
+    }
+
+    public void returnToMainMenu() {
+        this.gameActive = false;
+        if (mainMenu != null) {
+            // mainMenu.displayMainMenu();
+        }
+    }
+
     public void movePaddle1Up() {
         this.paddle1.moveUp(paddleSpeed);
     }
@@ -164,7 +239,7 @@ public class Game  {
     public void movePaddle2Down() {
         this.paddle2.moveDown(paddleSpeed);
     }
-    // Getters for game components
+
     public Ball getBall() {
         return this.ball;
     }
@@ -188,5 +263,4 @@ public class Game  {
     public void setGameActive(boolean gameActive) {
         this.gameActive = gameActive;
     }
-
 }

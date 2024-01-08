@@ -103,9 +103,23 @@ class GamePanel extends JPanel implements KeyListener {
                 case KeyEvent.VK_S:
                     game.movePaddle2Down();
                     break;
+                case KeyEvent.VK_P:
+                    game.pauseGame();
+                    break;
+            }
+        } else {
+            // Game is not active
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_R:
+                    game.restartGame();
+                    break;
+                case KeyEvent.VK_ESCAPE:
+                    game.returnToMainMenu();
+                    break;
             }
         }
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {
