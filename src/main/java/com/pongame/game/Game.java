@@ -29,7 +29,7 @@ public class Game {
 
     private HomePage mainMenu;
 
-    private boolean gamePaused = false;
+    public boolean gamePaused = false;
     private boolean pausedOnce = false;
 
     private int[] savedScores = new int[2];
@@ -116,8 +116,12 @@ public class Game {
         savedPaddle2Y = this.paddle2.getY();
     }
 
-    public void pauseGame() {
+    public void pause_ContinueGame() {
+        //this.gameActive= !this.gameActive;
+
         this.gamePaused = !this.gamePaused;
+        System.out.println("GAME PAUSED "+this.gamePaused);
+
         if (!pausedOnce && gamePaused) {
             // Save the initial state when pausing for the first time
             pausedOnce = true;
@@ -202,8 +206,8 @@ public class Game {
 
     public void restartGame() {
         this.gameActive = true;
-        this.pausedOnce = false; // Reset the flag when restarting the game
-        this.scoreManager.resetScores(); // Reset scores if necessary
+        this.pausedOnce = false;
+        this.scoreManager.resetScores();
 
         // Reset ball position
         this.ball.setX(Constants.WINDOW_WIDTH / 2 - this.ball.getDiameter() / 2);

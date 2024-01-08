@@ -59,6 +59,11 @@ class GamePanel extends JPanel implements KeyListener {
 
             // Display scores
             displayScores(g);
+           // if the game is pasued show notification
+             if(game.gamePaused){
+                this.displayPauseNotification(g);
+            }
+
         } else {
             // Game over, display score screen
             displayScoreScreen(g);
@@ -90,34 +95,55 @@ class GamePanel extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (game.isGameActive()) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                    game.movePaddle1Up();
-                    break;
-                case KeyEvent.VK_DOWN:
-                    game.movePaddle1Down();
-                    break;
-                case KeyEvent.VK_W:
-                    game.movePaddle2Up();
-                    break;
-                case KeyEvent.VK_S:
-                    game.movePaddle2Down();
-                    break;
-                case KeyEvent.VK_P:
-                    game.pauseGame();
-                    break;
+            if (!game.gamePaused) { // I check if the game is active and not paused before allowing paddle movements
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_UP:
+                        System.out.println("UP PRESSED");
+                        game.movePaddle1Up();
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        System.out.println("DOWN PRESSED");
+                        game.movePaddle1Down();
+                        break;
+                    case KeyEvent.VK_W:
+                        System.out.println("W PRESSED");
+                        game.movePaddle2Up();
+                        break;
+                    case KeyEvent.VK_S:
+                        System.out.println("S PRESSED");
+                        game.movePaddle2Down();
+                        break;
+                }
             }
+
+            if (e.getKeyCode() == KeyEvent.VK_P) {
+                System.out.println("P PRESSED");
+                if (!game.gamePaused) {
+                    game.pause_ContinueGame();
+                } else {
+                    game.pause_ContinueGame();
+                }
+            }
+
         } else {
             // Game is not active
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_R:
+                    System.out.println("R PRESSED");
                     game.restartGame();
                     break;
                 case KeyEvent.VK_ESCAPE:
+                    System.out.println("ESC PRESSED");
                     game.returnToMainMenu();
                     break;
             }
         }
+    }
+
+    private void displayPauseNotification(Graphics g) { //when the game is paused
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.drawString("Paused. Press P to continue.", getWidth() / 2 - 250, getHeight() / 2);
     }
 
 
