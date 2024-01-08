@@ -19,6 +19,8 @@ class GamePanel extends JPanel implements KeyListener {
 
     public GamePanel(Game game) {
         this.game = game;
+        this.game.initializeGame();
+
         this.scoreManager = ScoreManager.getInstance();
         setFocusable(true);
         addKeyListener(this);
@@ -95,7 +97,7 @@ class GamePanel extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (game.isGameActive()) {
-            if (!game.gamePaused) { // I check if the game is active and not paused before allowing paddle movements
+            if (!game.gamePaused) { // Check if the game is active and not paused before allowing paddle movements
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_UP:
                         System.out.println("UP PRESSED");
@@ -115,14 +117,15 @@ class GamePanel extends JPanel implements KeyListener {
                         break;
                 }
             }
-
+   // ACTIVE BUT NOT PAUSED
             if (e.getKeyCode() == KeyEvent.VK_P) {
                 System.out.println("P PRESSED");
-                if (!game.gamePaused) {
-                    game.pause_ContinueGame();
-                } else {
-                    game.pause_ContinueGame();
-                }
+                game.pause_ContinueGame();
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_Q) {
+                System.out.println("Q PRESSED");
+                game.stopThegame();
             }
 
         } else {
@@ -130,15 +133,30 @@ class GamePanel extends JPanel implements KeyListener {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_R:
                     System.out.println("R PRESSED");
-                    game.restartGame();
+                    this.setVisible(false);// close current window
+                    this.returnToMainMenu();//open home
+
                     break;
-                case KeyEvent.VK_ESCAPE:
-                    System.out.println("ESC PRESSED");
-                    game.returnToMainMenu();
+                case KeyEvent.VK_Q:
+                    System.out.println("Q PRESSED");
+                    game.stopThegame();
                     break;
             }
         }
     }
+
+    private void returnToMainMenu() {
+        game.restartGame();
+
+        //hides the current game window and opens the home page
+        this.setVisible(false);
+        HomePage homePage = new HomePage();
+        homePage.setVisible(true);
+
+
+    }
+
+
 
     private void displayPauseNotification(Graphics g) { //when the game is paused
         g.setColor(Color.WHITE);

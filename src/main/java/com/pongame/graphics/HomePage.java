@@ -1,7 +1,10 @@
 package com.pongame.graphics;
 
+import com.pongame.classes.Ball;
+import com.pongame.classes.Paddle;
 import com.pongame.config.DifficultyLevel;
 import com.pongame.game.Game;
+import com.pongame.patterns.Observer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +38,7 @@ public class HomePage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 DifficultyLevel selectedDifficulty = (DifficultyLevel) difficultyComboBox.getSelectedItem();
 
-// Start the game with the selected difficulty
+                // Start the game with the selected difficulty
                 Game game = Game.getInstance(selectedDifficulty);
                 JFrame gameFrame = new JFrame("Pong Game");
                 gameFrame.setSize(800, 600);
@@ -46,12 +49,8 @@ public class HomePage extends JFrame {
                 HomePage.this.setVisible(false);
                 gameFrame.setVisible(true);
                 System.out.println("Selected Difficulty: " + selectedDifficulty);
-
-
-
             }
         });
     }
-
 
 }

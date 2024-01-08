@@ -66,7 +66,9 @@ public class Game {
     // Singleton instance creation with dependency injection
 
     public static synchronized Game getInstance(DifficultyLevel difficultyLevel) {
-        System.out.println("from game class " + difficultyLevel);
+        System.out.println("from game class (MUST BE 3) " + difficultyLevel.getBallSpeed());
+
+
         if (instance == null) {
             instance = new Game(difficultyLevel);
         }
@@ -130,20 +132,7 @@ public class Game {
     }
 
     public void restartFromPause() {
-        // Restore the state to the saved state
-        this.scoreManager.setPlayer1Score(savedScores[0]);
-        this.scoreManager.setPlayer2Score(savedScores[1]);
-        this.paddleSpeed = savedPaddleSpeed;
-        this.ball.setX(savedBallX);
-        this.ball.setY(savedBallY);
-        this.paddle1.setY(savedPaddle1Y);
-        this.paddle2.setY(savedPaddle2Y);
 
-        // Reset the pausedOnce flag
-        pausedOnce = false;
-
-        // Resume the game
-        this.gamePaused = false;
 
         // Notify observers with the resumed game state
         this.notifyObserversWithGameState();
@@ -205,28 +194,49 @@ public class Game {
     }
 
     public void restartGame() {
-        this.gameActive = true;
-        this.pausedOnce = false;
+        this.initializeGame(); 
+        gamePaused = false; 
+    }
+
+    public void initializeGame() {
+        // GO BACK TO initial state
+       // Make the new diff NEUTRE TO AVOID MULTIPLICATION of PREVIOUS DIFF LEVEL with new selected one after going back home
+        DifficultyLevel difficultyLevelN =DifficultyLevel.NEUTRAL;
+        this.ball = new Ball(difficultyLevelN);
+        this.paddle1 = new Paddle(0, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, this.difficultyLevel);
+        this.paddle2 = new Paddle(Constants.WINDOW_WIDTH - Paddle.WIDTH,
+                Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, this.difficultyLevel);
+
+        // Reset scores
         this.scoreManager.resetScores();
 
         // Reset ball position
         this.ball.setX(Constants.WINDOW_WIDTH / 2 - this.ball.getDiameter() / 2);
         this.ball.setY(Constants.WINDOW_HEIGHT / 2 - this.ball.getDiameter() / 2);
 
-        // Reset paddle positions
-        this.paddle1.reset();
-        this.paddle2.reset();
+        // Reset game state flags
+        this.gameActive = true;
+        this.gamePaused = false;
+        this.pausedOnce = false;
 
-        // Notify observers with the reset game state
+        // Notify observers with the initialized game state
         this.notifyObserversWithGameState();
+
+        System.out.println("After initialization ");
+        System.out.println("Ball position reset: X - " + ball.getX() + ", Y - " + ball.getY());
+        System.out.println("Game state flags reset: gameActive - " + gameActive + ", gamePaused - " + gamePaused + ", pausedOnce - " + pausedOnce);
+        System.out.println("Scores reset: Player 1 - " + scoreManager.getPlayer1Score() + ", Player 2 - " + scoreManager.getPlayer2Score());
+
     }
 
-    public void returnToMainMenu() {
+
+    public void stopThegame() {
+        System.out.println("Restart the game ....");
         this.gameActive = false;
-        if (mainMenu != null) {
-            // mainMenu.displayMainMenu();
-        }
+
     }
+
+
 
     public void movePaddle1Up() {
         this.paddle1.moveUp(paddleSpeed);
@@ -266,5 +276,9 @@ public class Game {
 
     public void setGameActive(boolean gameActive) {
         this.gameActive = gameActive;
+    }
+
+    public HomePage getMainMenu() {
+        return mainMenu;
     }
 }
