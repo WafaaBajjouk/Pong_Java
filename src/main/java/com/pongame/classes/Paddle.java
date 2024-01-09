@@ -69,4 +69,15 @@ public class Paddle {
     public void setY(int y) {
         this.y = y;
     }
+
+    public void autoMove(Ball ball) {
+        int ballCenterY = ball.getY() + ball.getDiameter() / 2;
+        int paddleCenterY = this.y + HEIGHT / 2;
+
+        if (ballCenterY < paddleCenterY) {
+            moveUp(this.speed);
+        } else if (ballCenterY > paddleCenterY) {
+            moveDown(this.speed);
+        }
+    }
 }

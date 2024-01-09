@@ -10,10 +10,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-class GamePanel extends JPanel implements KeyListener {
+
+class GamePanel extends JPanel {
     private final Game game;
     private ScoreManager scoreManager;
 
@@ -23,7 +22,8 @@ class GamePanel extends JPanel implements KeyListener {
 
         this.scoreManager = ScoreManager.getInstance();
         setFocusable(true);
-        addKeyListener(this);
+        InputHandler inputHandler = new InputHandler(game);
+        addKeyListener(inputHandler);
 
         Timer timer = new Timer(Constants.GAME_SPEED, new ActionListener() {
             @Override
@@ -89,61 +89,7 @@ class GamePanel extends JPanel implements KeyListener {
         g.drawString("Game Over! Press R to restart.", getWidth() / 2 - 220, getHeight() / 2 + 150);
     }
 
-    // Implement KeyListener methods
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (game.isGameActive()) {
-            if (!game.gamePaused) { // Check if the game is active and not paused before allowing paddle movements
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_UP:
-                        System.out.println("UP PRESSED");
-                        game.movePaddle1Up();
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        System.out.println("DOWN PRESSED");
-                        game.movePaddle1Down();
-                        break;
-                    case KeyEvent.VK_W:
-                        System.out.println("W PRESSED");
-                        game.movePaddle2Up();
-                        break;
-                    case KeyEvent.VK_S:
-                        System.out.println("S PRESSED");
-                        game.movePaddle2Down();
-                        break;
-                }
-            }
-   // ACTIVE BUT NOT PAUSED
-            if (e.getKeyCode() == KeyEvent.VK_P) {
-                System.out.println("P PRESSED");
-                game.pause_ContinueGame();
-            }
-
-            if (e.getKeyCode() == KeyEvent.VK_Q) {
-                System.out.println("Q PRESSED");
-                game.stopThegame();
-            }
-
-        } else {
-            // Game is not active
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_R:
-                    System.out.println("R PRESSED");
-                    this.setVisible(false);// close current window
-                    this.returnToMainMenu();//open home
-
-                    break;
-                case KeyEvent.VK_Q:
-                    System.out.println("Q PRESSED");
-                    game.stopThegame();
-                    break;
-            }
-        }
-    }
 
     private void returnToMainMenu() {
         game.restartGame();
@@ -165,7 +111,4 @@ class GamePanel extends JPanel implements KeyListener {
     }
 
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
 }

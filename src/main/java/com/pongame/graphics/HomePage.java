@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 
 public class HomePage extends JFrame {
     private JComboBox<DifficultyLevel> difficultyComboBox;
+    private JButton startSinglePlayerButton;
 
     public HomePage() {
         setTitle("Pong Game Home Page");
@@ -22,35 +23,51 @@ public class HomePage extends JFrame {
 
         JLabel difficultyLabel = new JLabel("Select Difficulty:");
         difficultyComboBox = new JComboBox<>(DifficultyLevel.values());
-        JButton startButton = new JButton("Start Game");
-        setLayout(new GridLayout(3, 1));
+        JButton startMultiPlayerButton = new JButton("Start Multiplayer Game");
+        startSinglePlayerButton = new JButton("Play with Computer");
+
+        setLayout(new GridLayout(4, 1)); // Adjust for the new button
         JPanel panel1 = new JPanel();
         panel1.add(difficultyLabel);
         panel1.add(difficultyComboBox);
         JPanel panel2 = new JPanel();
-        panel2.add(startButton);
+        panel2.add(startMultiPlayerButton);
+        JPanel panel3 = new JPanel();
+        panel3.add(startSinglePlayerButton);
 
         add(panel1);
         add(panel2);
+        add(panel3);
 
-        startButton.addActionListener(new ActionListener() {
+        startMultiPlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DifficultyLevel selectedDifficulty = (DifficultyLevel) difficultyComboBox.getSelectedItem();
+                startGame(false); // false for multiplayer mode
+            }
+        });
 
-                // Start the game with the selected difficulty
-                Game game = Game.getInstance(selectedDifficulty);
-                JFrame gameFrame = new JFrame("Pong Game");
-                gameFrame.setSize(800, 600);
-                gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                gameFrame.setLocationRelativeTo(null);
-                gameFrame.getContentPane().add(new GamePanel(game));
-
-                HomePage.this.setVisible(false);
-                gameFrame.setVisible(true);
-                System.out.println("Selected Difficulty: " + selectedDifficulty);
+        startSinglePlayerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startGame(true); // true for single-player mode
             }
         });
     }
 
+    private void startGame(boolean isSinglePlayer) {
+        DifficultyLevel selectedDifficulty = (DifficultyLevel) difficultyComboBox.getSelectedItem();
+
+        // Start the game with the selected difficulty and mode
+        Game game = Game.getInstance(selectedDifficulty, isSinglePlayer);
+        JFrame gameFrame = new JFrame("Pong Game");
+        gameFrame.setSize(800, 600);
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setLocationRelativeTo(null);
+        gameFrame.getContentPane().add(new GamePanel(game));
+
+        HomePage.this.setVisible(false);
+        gameFrame.setVisible(true);
+        System.out.println("Game Started - Difficulty: " + selectedDifficulty + ", Mode: " + (isSinglePlayer ? "Single Player" : "Multiplayer"));
+    }
 }
+
