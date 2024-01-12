@@ -38,6 +38,8 @@ public class Match {
         return isSinglePlayerMode;
     }
 
+
+
     public void setSinglePlayerMode(boolean singlePlayerMode) {
         isSinglePlayerMode = singlePlayerMode;
     }

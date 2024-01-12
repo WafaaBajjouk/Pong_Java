@@ -2,6 +2,8 @@ package com.pongame.dao;
 
 import com.pongame.classes.Match;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameDAO {
     private Connection connection;
@@ -36,4 +38,31 @@ public class GameDAO {
         }
     }
 
+
+//    history of games , i need it for profile page
+
+    public List<Match> getGamesByPlayerId(int playerId) throws SQLException {
+        List<Match> games = new ArrayList<>();
+        String sql = "SELECT * FROM Game WHERE player_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, playerId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    int gameId = resultSet.getInt("id");
+                    Date date = resultSet.getDate("date");
+                    boolean isSinglePlayerMode = resultSet.getBoolean("isSinglePlayerMode");
+                    int score = resultSet.getInt("score");
+                    Match game = new Match( isSinglePlayerMode, score, playerId);
+                    game.setId(gameId);
+                    game.setDate(date);
+                    games.add(game);
+                }
+            }
+        }
+
+        return games;
+    }
 }
+
