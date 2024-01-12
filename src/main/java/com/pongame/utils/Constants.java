@@ -3,16 +3,21 @@ package com.pongame.utils;
 import com.pongame.classes.Paddle;
 
 public interface Constants {
-    public static final int WINDOW_WIDTH = 800;
-    public static final int WINDOW_HEIGHT = 600;
-    public static final int LINE_WIDTH = 8;
-    public static final int WINNING_SCORE = 3;
+    int WINDOW_WIDTH = 800;
+    int WINDOW_HEIGHT = 600;
+    int LINE_WIDTH = 8;
+    int WINNING_SCORE = 10;
 
 
-    public static final int BALL_DIAMETERE=20;
-    public static final int INITIAL_PADDLE_X = 0;
-    public static final int INITIAL_PADDLE_Y = Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2;
-    public static final int GAME_SPEED = 20;
+    int BALL_DIAMETERE=20;
+    int INITIAL_PADDLE_X = 0;
+    int INITIAL_PADDLE_Y = Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2;
+    int GAME_SPEED = 2;
+
+    String DB_URL = "jdbc:mysql://localhost:3306/PongGame";
+    String DB_USER = "root";
+    String DB_PASSWORD = "wbjk1205";
+
 }
 
 

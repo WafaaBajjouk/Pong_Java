@@ -1,14 +1,15 @@
 package com.pongame.game;
 
 import com.pongame.classes.Paddle;
+import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
 //specialized version of the Game class, designed for single-player
 // gameplay where the player competes against a computer-controlled paddle
 public class PlayWithAI extends Game {
-    private Paddle aiPaddle;
+    private final Paddle aiPaddle;
 
-    public PlayWithAI(DifficultyLevel difficultyLevel) {
-        super(difficultyLevel,true);
+    public PlayWithAI(DifficultyLevel difficultyLevel, Player player) {
+        super(difficultyLevel,true,player);
         //  the player controls paddle1, and the computer controls paddle2
         this.aiPaddle = this.getPaddle2();
     }
@@ -16,6 +17,7 @@ public class PlayWithAI extends Game {
     @Override
     public void updateGame() {
         if (!gamePaused) {
+
             this.getBall().move();
             this.getPaddle1().followBall(this.getBall());
             this.autoMoveAI();
@@ -26,6 +28,7 @@ public class PlayWithAI extends Game {
 
     // AI movement logic, specific to PlayWithAI
     private void autoMoveAI() {
+
         if (this.getBall().getY() < aiPaddle.getY()) {
             aiPaddle.moveUp(this.difficultyLevel.getPaddleSpeed());
         } else if (this.getBall().getY() > aiPaddle.getY() + Paddle.HEIGHT) {

@@ -2,10 +2,13 @@ package com.pongame.game;
 
 import com.pongame.utils.Constants;
 
+import java.io.Serializable;
+
 import static com.pongame.utils.Constants.*;
 
-class CollisionHandler {
-    private Game game;
+
+class CollisionHandler  implements Serializable {
+    private final Game game;
 
     public CollisionHandler(Game game) {
         this.game = game;

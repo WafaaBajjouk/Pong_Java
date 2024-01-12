@@ -1,6 +1,8 @@
 package com.pongame.game;
 
-public class ScoreManager {
+import java.io.Serializable;
+
+public class ScoreManager  implements Serializable {
     private static ScoreManager instance;
 
     private int player1Score;

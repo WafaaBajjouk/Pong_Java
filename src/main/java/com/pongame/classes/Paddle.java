@@ -4,17 +4,19 @@ import com.pongame.config.DifficultyLevel;
 import com.pongame.utils.Constants;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Paddle {
+
+public class Paddle  implements Serializable {
     public static final int WIDTH = 20;
     public static final int HEIGHT = 100;
     private int x;
     private int y;
 
-    private int speed;
+    private final int speed;
 
     public Paddle(int x, int y, DifficultyLevel difficultyLevel) {
-        this.speed= 3* difficultyLevel.getPaddleSpeed();
+        this.speed= difficultyLevel.getPaddleSpeed();
         this.x = x;
         this.y = y;
     }
@@ -68,6 +70,10 @@ public class Paddle {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getSpeed() {
+        return this.speed;
     }
 
     public void autoMove(Ball ball) {

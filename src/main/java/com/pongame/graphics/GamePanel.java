@@ -2,6 +2,7 @@ package com.pongame.graphics;
 
 import com.pongame.classes.Ball;
 import com.pongame.classes.Paddle;
+import com.pongame.classes.Player;
 import com.pongame.game.Game;
 import com.pongame.game.ScoreManager;
 import com.pongame.utils.Constants;
@@ -10,19 +11,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
-class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements KeyListener {
     private final Game game;
-    private ScoreManager scoreManager;
+    private final Player Loggedplayer;
 
-    public GamePanel(Game game) {
+    private final ScoreManager scoreManager;
+
+    public GamePanel(Game game, Player player) {
+        this.Loggedplayer=player;
         this.game = game;
         this.game.initializeGame();
 
         this.scoreManager = ScoreManager.getInstance();
         setFocusable(true);
-        InputHandler inputHandler = new InputHandler(game);
+        InputHandler inputHandler = new InputHandler(game, this);
         addKeyListener(inputHandler);
 
         Timer timer = new Timer(Constants.GAME_SPEED, new ActionListener() {
@@ -67,21 +73,20 @@ class GamePanel extends JPanel {
             }
 
         } else {
-            // Game over, display score screen
             displayScoreScreen(g);
         }
     }
 
     private void displayScores(Graphics g) {
-        // Display scores on the screen
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Player 1: " + scoreManager.getPlayer1Score(), 50, 30);
+
+        String player1Name = Loggedplayer != null ? Loggedplayer.getName() : "Player 1";
+        g.drawString(player1Name + ": " + scoreManager.getPlayer1Score(), 50, 30);
         g.drawString("Player 2: " + scoreManager.getPlayer2Score(), getWidth() - 150, 30);
     }
 
     private void displayScoreScreen(Graphics g) {
-        // Display scores on the score screen
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 30));
         g.drawString("Player 1: " + scoreManager.getPlayer1Score(), getWidth() / 2 - 150, getHeight() / 2 - 50);
@@ -91,14 +96,11 @@ class GamePanel extends JPanel {
 
 
 
-    private void returnToMainMenu() {
-        game.restartGame();
-
-        //hides the current game window and opens the home page
+    void returnToMainMenu() {
+        game.initializeGame();
         this.setVisible(false);
-        HomePage homePage = new HomePage();
+        HomePage homePage = new HomePage(this.Loggedplayer);
         homePage.setVisible(true);
-
 
     }
 
@@ -108,6 +110,19 @@ class GamePanel extends JPanel {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 30));
         g.drawString("Paused. Press P to continue.", getWidth() / 2 - 250, getHeight() / 2);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 
 

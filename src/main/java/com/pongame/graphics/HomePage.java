@@ -1,10 +1,10 @@
 package com.pongame.graphics;
 
-import com.pongame.classes.Ball;
-import com.pongame.classes.Paddle;
+import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
 import com.pongame.game.Game;
-import com.pongame.patterns.Observer;
+import com.pongame.graphics.PlayerAccountForm;
+import com.pongame.graphics.LoginForm;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,62 +12,114 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HomePage extends JFrame {
-    private JComboBox<DifficultyLevel> difficultyComboBox;
-    private JButton startSinglePlayerButton;
+    private final JComboBox<DifficultyLevel> difficultyComboBox;
+    private final JButton startSinglePlayerButton;
+    private final JButton startMultiPlayerButton;
+    private final JButton createAccountButton;
+    private final JButton loginButton;
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
 
-    public HomePage() {
-        setTitle("Pong Game Home Page");
-        setSize(400, 200);
+    public HomePage(Player player) {
+        ImageIcon backgroundImage = new ImageIcon("");
+        JLabel backgroundLabel = new JLabel(backgroundImage);
+
+
+        backgroundLabel.setLayout(new BorderLayout());
+
+        setSize(WIDTH, HEIGHT);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
-        JLabel difficultyLabel = new JLabel("Select Difficulty:");
         difficultyComboBox = new JComboBox<>(DifficultyLevel.values());
-        JButton startMultiPlayerButton = new JButton("Start Multiplayer Game");
+        difficultyComboBox.setPreferredSize(new Dimension(150, 30));
+        Dimension buttonSize = new Dimension(150, 30);
         startSinglePlayerButton = new JButton("Play with Computer");
+        startSinglePlayerButton.setPreferredSize(buttonSize);
+        startMultiPlayerButton = new JButton("Start Multiplayer Game");
+        startMultiPlayerButton.setPreferredSize(buttonSize);
+        createAccountButton = new JButton("Create Account");
+        loginButton = new JButton("Login");
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        centerPanel.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 0, 20, 0);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridy++;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 0, 10);
+        centerPanel.add(new JLabel("Select Difficulty:"), gbc);
+        gbc.gridx++;
+        centerPanel.add(difficultyComboBox, gbc);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 0, 10);
+        centerPanel.add(startMultiPlayerButton, gbc);
+        gbc.gridx++;
+        centerPanel.add(startSinglePlayerButton, gbc);
 
-        setLayout(new GridLayout(4, 1)); // Adjust for the new button
-        JPanel panel1 = new JPanel();
-        panel1.add(difficultyLabel);
-        panel1.add(difficultyComboBox);
-        JPanel panel2 = new JPanel();
-        panel2.add(startMultiPlayerButton);
-        JPanel panel3 = new JPanel();
-        panel3.add(startSinglePlayerButton);
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel.add(createAccountButton);
+        bottomPanel.add(loginButton);
 
-        add(panel1);
-        add(panel2);
-        add(panel3);
+        if (player != null) {
+            createAccountButton.setVisible(false);
+            loginButton.setVisible(false);
+        }
+        createAccountButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PlayerAccountForm accountForm = new PlayerAccountForm();
+                accountForm.setVisible(true);
+            }
+        });
+
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoginForm loginForm = new LoginForm();
+                loginForm.setVisible(true);
+            }
+        });
+
+        // Add the centerPanel to the backgroundLabel
+        backgroundLabel.add(centerPanel, BorderLayout.CENTER);
+        backgroundLabel.add(bottomPanel, BorderLayout.SOUTH);
+
+        // Add the backgroundLabel to the JFrame
+        getContentPane().add(backgroundLabel);
 
         startMultiPlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startGame(false); // false for multiplayer mode
+                startGame(false, player);
             }
         });
 
         startSinglePlayerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startGame(true); // true for single-player mode
+                startGame(true, player);
             }
         });
     }
 
-    private void startGame(boolean isSinglePlayer) {
+    private void startGame(boolean isSinglePlayer, Player player) {
         DifficultyLevel selectedDifficulty = (DifficultyLevel) difficultyComboBox.getSelectedItem();
-
-        // Start the game with the selected difficulty and mode
-        Game game = Game.getInstance(selectedDifficulty, isSinglePlayer);
+        Game game = new Game(selectedDifficulty, isSinglePlayer, player);
         JFrame gameFrame = new JFrame("Pong Game");
-        gameFrame.setSize(800, 600);
+        gameFrame.setSize(WIDTH, HEIGHT);
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setLocationRelativeTo(null);
-        gameFrame.getContentPane().add(new GamePanel(game));
+        gameFrame.getContentPane().add(new GamePanel(game, player));
 
         HomePage.this.setVisible(false);
         gameFrame.setVisible(true);
         System.out.println("Game Started - Difficulty: " + selectedDifficulty + ", Mode: " + (isSinglePlayer ? "Single Player" : "Multiplayer"));
     }
 }
-

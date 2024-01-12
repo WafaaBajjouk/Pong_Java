@@ -1,15 +1,11 @@
-
-
 package com.pongame.graphics;
 
-import javax.swing.*;
+public class PongGame {
 
-public class Main {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                HomePage homePage = new HomePage();
+                HomePage homePage = new HomePage(null);
                 homePage.setVisible(true);
             }
         });

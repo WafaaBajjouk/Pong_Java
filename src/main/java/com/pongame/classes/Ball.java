@@ -4,8 +4,9 @@ import com.pongame.config.DifficultyLevel;
 import com.pongame.utils.Constants;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Ball {
+public class Ball  implements Serializable {
     private int x;
     private int y;
     private int diameter;
