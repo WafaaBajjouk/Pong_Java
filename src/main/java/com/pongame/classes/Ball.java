@@ -104,4 +104,6 @@ public class Ball  implements Serializable {
     public void setySpeed(int ySpeed) {
         this.ySpeed = ySpeed;
     }
+
+
 }

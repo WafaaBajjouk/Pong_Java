@@ -253,6 +253,6 @@ public class Game implements Serializable {
     }
 
     public Player getPlayer() {
-       return this.player;
+        return this.player;
     }
 }

@@ -26,11 +26,11 @@ public class InputHandler implements KeyListener, Serializable {
             if (!game.gamePaused) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_UP:
-                        System.out.println("UP PRESSED");
+//                        System.out.println("UP PRESSED");
                         game.getPaddle1().moveUp(game.getDifficultyLevel().getPaddleSpeed());
                         break;
                     case KeyEvent.VK_DOWN:
-                        System.out.println("DOWN PRESSED");
+//                        System.out.println("DOWN PRESSED");
                         game.getPaddle1().moveDown(game.getDifficultyLevel().getPaddleSpeed());
                         break;
                     case KeyEvent.VK_W:
@@ -39,29 +39,29 @@ public class InputHandler implements KeyListener, Serializable {
                         game.getPaddle2().moveUp(game.getDifficultyLevel().getPaddleSpeed());
                         break;
                     case KeyEvent.VK_S:
-                        System.out.println("S PRESSED");
+//                        System.out.println("S PRESSED");
                         game.getPaddle2().moveDown(game.getDifficultyLevel().getPaddleSpeed());
                         break;
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_P) {
-                System.out.println("P PRESSED");
+//                System.out.println("P PRESSED");
                 game.pause_ContinueGame();
             }
             if (e.getKeyCode() == KeyEvent.VK_Q) {
-                System.out.println("Q PRESSED");
+//                System.out.println("Q PRESSED");
                 game.endGame();
             }
 
         } else if (gamePanel instanceof GamePanel) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_R:
-                    System.out.println("R PRESSED");
+//                    System.out.println("R PRESSED");
                     gamePanel.returnToMainMenu();
                     break;
 
                 case KeyEvent.VK_Q:
-                    System.out.println("Q PRESSED");
+//                    System.out.println("Q PRESSED");
                     game.endGame();
                     break;
             }

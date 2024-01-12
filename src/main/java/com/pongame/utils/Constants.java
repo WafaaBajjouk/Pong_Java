@@ -3,10 +3,10 @@ package com.pongame.utils;
 import com.pongame.classes.Paddle;
 
 public interface Constants {
-    int WINDOW_WIDTH = 800;
+    int WINDOW_WIDTH = 900;
     int WINDOW_HEIGHT = 600;
     int LINE_WIDTH = 8;
-    int WINNING_SCORE = 3;
+    int WINNING_SCORE = 100;
 
 
     int BALL_DIAMETERE=20;

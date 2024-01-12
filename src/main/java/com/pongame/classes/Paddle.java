@@ -13,7 +13,7 @@ public class Paddle  implements Serializable {
     private int x;
     private int y;
 
-    private final int speed;
+    private int speed;
 
     public Paddle(int x, int y, DifficultyLevel difficultyLevel) {
         this.speed= difficultyLevel.getPaddleSpeed();
@@ -37,7 +37,7 @@ public class Paddle  implements Serializable {
     }
 
     public void moveDown(int speed) {
-        y += this.speed;
+        y += speed;
         if (y + HEIGHT > Constants.WINDOW_HEIGHT) {
             y = Constants.WINDOW_HEIGHT - HEIGHT;
         }
@@ -76,14 +76,11 @@ public class Paddle  implements Serializable {
         return this.speed;
     }
 
-    public void autoMove(Ball ball) {
-        int ballCenterY = ball.getY() + ball.getDiameter() / 2;
-        int paddleCenterY = this.y + HEIGHT / 2;
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
 
-        if (ballCenterY < paddleCenterY) {
-            moveUp(this.speed);
-        } else if (ballCenterY > paddleCenterY) {
-            moveDown(this.speed);
-        }
+    public void stopMoving() {
+        this.speed = 0;
     }
 }
