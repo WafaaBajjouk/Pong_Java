@@ -44,6 +44,7 @@ public class PlayerDAO {
                 String playerPassword = resultSet.getString("password");
 
                 Player player = new Player( playerName, playerBirthday, playerPassword);
+                player.setId(id);
                 return player;
             }
         } catch (SQLException e) {

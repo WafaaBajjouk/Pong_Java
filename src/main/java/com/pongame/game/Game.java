@@ -1,14 +1,19 @@
 package com.pongame.game;
 
 import com.pongame.classes.Ball;
+import com.pongame.classes.Match;
 import com.pongame.classes.Paddle;
 import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
+import com.pongame.dao.GameDAO;
+import com.pongame.database.DbConnection;
 import com.pongame.graphics.HomePage;
 import com.pongame.patterns.Observer;
 import com.pongame.utils.Constants;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +22,8 @@ import static com.pongame.utils.Constants.WINNING_SCORE;
 public class Game implements Serializable {
     private static Game instance; // the single instance to implement the Singleton pattern
     private final Player player; // The currently logged-in player
+
+
 
     private Ball ball;
     DifficultyLevel difficultyLevel;
@@ -176,7 +183,24 @@ public class Game implements Serializable {
 
     public void endGame() {
         this.gameActive = false;
-        this.displayWinner();
+        if (player != null) {
+            System.out.println("PlayerID   "+this.player.getId());
+
+            saveGameToDatabase();
+        }
+    }
+
+    private void saveGameToDatabase() {
+        Connection connection = DbConnection.getInstance();
+        try {
+            Match match = new Match(this.isSinglePlayerMode, this.scoreManager.getPlayer1Score(), this.player.getId());
+            GameDAO gameDAO = new GameDAO(connection);
+            System.out.println("Game Saved player Id  "+match.getPlayerId());
+            gameDAO.saveGame(match);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void displayWinner() {

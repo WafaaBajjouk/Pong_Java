@@ -6,7 +6,7 @@ public interface Constants {
     int WINDOW_WIDTH = 800;
     int WINDOW_HEIGHT = 600;
     int LINE_WIDTH = 8;
-    int WINNING_SCORE = 10;
+    int WINNING_SCORE = 3;
 
 
     int BALL_DIAMETERE=20;

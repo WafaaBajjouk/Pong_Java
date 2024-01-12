@@ -21,7 +21,7 @@ public class HomePage extends JFrame {
     private static final int HEIGHT = 600;
 
     public HomePage(Player player) {
-        ImageIcon backgroundImage = new ImageIcon("");
+        ImageIcon backgroundImage = new ImageIcon("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/utils/back.png");
         JLabel backgroundLabel = new JLabel(backgroundImage);
 
 
