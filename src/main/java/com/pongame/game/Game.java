@@ -7,7 +7,6 @@ import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
 import com.pongame.dao.GameDAO;
 import com.pongame.database.DbConnection;
-import com.pongame.graphics.HomePage;
 import com.pongame.patterns.Observer;
 import com.pongame.utils.Constants;
 
@@ -152,14 +151,16 @@ public class Game implements Serializable {
     }
 
     // Pause or continue the game
-    public void pause_ContinueGame() {
+    public boolean pause_ContinueGame() {
         this.gamePaused = !this.gamePaused;
         System.out.println("GAME PAUSED " + this.gamePaused);
 
         if (!pausedOnce && gamePaused) {
             pausedOnce = true;
             saveGameState();
+
         }
+        return  this.gamePaused;
     }
 
     void updateScoresAndResetBall() {
@@ -203,16 +204,7 @@ public class Game implements Serializable {
 
     }
 
-    private void displayWinner() {
-        String winner = (this.scoreManager.getPlayer1Score() >= WINNING_SCORE) ?
-                (player != null ? player.getName() : "Player 1") : "Player 2";
-        System.out.println(winner + " wins!");
-    }
 
-    public void restartGame() {
-        this.initializeGame();
-
-    }
 
     // Initialize the game state
     public void initializeGame() {
@@ -232,46 +224,7 @@ public class Game implements Serializable {
         System.out.println("Scores reset: Player 1 - " + scoreManager.getPlayer1Score() + ", Player 2 - " + scoreManager.getPlayer2Score());
     }
 
-    public void copyGameState(Game otherGame) {
-        // Copy the ball's attributes
-        this.ball.setX(otherGame.ball.getX());
-        this.ball.setY(otherGame.ball.getY());
-        this.ball.setxSpeed(otherGame.ball.getxSpeed());
-        this.ball.setySpeed(otherGame.ball.getySpeed());
 
-        // Copy the paddle1's attributes
-        this.paddle1.setY(otherGame.paddle1.getY());
-
-        // Copy the paddle2's attributes
-        this.paddle2.setY(otherGame.paddle2.getY());
-
-        // Copy the scores
-        this.scoreManager.setPlayer1Score(otherGame.scoreManager.getPlayer1Score());
-        this.scoreManager.setPlayer2Score(otherGame.scoreManager.getPlayer2Score());
-
-        // Copy the game state flags
-        this.gameActive = otherGame.gameActive;
-        this.gamePaused = otherGame.gamePaused;
-        this.pausedOnce = otherGame.pausedOnce;
-    }
-
-
-    // associating the paddle moves with the speed
-    public void movePaddle1Up() {
-        this.paddle1.moveUp(this.difficultyLevel.getPaddleSpeed());
-    }
-
-    public void movePaddle1Down() {
-        this.paddle1.moveDown(this.difficultyLevel.getPaddleSpeed());
-    }
-
-    public void movePaddle2Up() {
-        this.paddle2.moveUp(this.difficultyLevel.getPaddleSpeed());
-    }
-
-    public void movePaddle2Down() {
-        this.paddle2.moveDown(this.difficultyLevel.getPaddleSpeed());
-    }
 
     // Getters & setters
     public Ball getBall() {
@@ -293,5 +246,13 @@ public class Game implements Serializable {
 
     public DifficultyLevel getDifficultyLevel() {
         return this.difficultyLevel;
+    }
+
+    public ScoreManager getScoreManager() {
+        return this.scoreManager;
+    }
+
+    public Player getPlayer() {
+       return this.player;
     }
 }
