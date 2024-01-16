@@ -12,8 +12,8 @@ public class Ball  implements Serializable {
     private int diameter;
     private static final Color BALL_COLOR = Color.RED;
 
-    private int xSpeed;
-    private int ySpeed;
+    private double xSpeed;
+    private double ySpeed;
 
     private DifficultyLevel difficulty;
 
@@ -37,7 +37,8 @@ public class Ball  implements Serializable {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, diameter, diameter);
+        Rectangle r=new Rectangle(x, y, diameter, diameter);
+        return r;
     }
 
 
@@ -77,12 +78,12 @@ public class Ball  implements Serializable {
         return diameter;
     }
 
-    public int getxSpeed() {
-        return xSpeed;
+    public double getxSpeed() {
+        return Math.abs(xSpeed);
     }
 
-    public int getySpeed() {
-        return ySpeed;
+    public double getySpeed() {
+        return Math.abs(ySpeed);
     }
 
     public void setX(int x) {
@@ -97,11 +98,11 @@ public class Ball  implements Serializable {
         this.diameter = diameter;
     }
 
-    public void setxSpeed(int xSpeed) {
+    public void setxSpeed(double xSpeed) {
         this.xSpeed = xSpeed;
     }
 
-    public void setySpeed(int ySpeed) {
+    public void setySpeed(double ySpeed) {
         this.ySpeed = ySpeed;
     }
 

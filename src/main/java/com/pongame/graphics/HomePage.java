@@ -3,6 +3,7 @@ package com.pongame.graphics;
 import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
 import com.pongame.game.Game;
+import com.pongame.game.PlayWithAI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +20,8 @@ public class HomePage extends JFrame {
     private static final int HEIGHT = 600;
     private static final int ICON_WIDTH = 30;
     private static final int ICON_HEIGHT = 30;
+    Game gameInstance ;
+
 
     public HomePage(Player player) {
         // Background image
@@ -78,7 +81,7 @@ public class HomePage extends JFrame {
         topPanel.add(profileButton);
         profileButton.setVisible(player != null);
         // Panel for bottom components
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomPanel.setOpaque(false);
         bottomPanel.add(createAccountButton);
         bottomPanel.add(loginButton);
@@ -113,13 +116,19 @@ public class HomePage extends JFrame {
 
     private void startGame(boolean isSinglePlayer, Player player) {
         DifficultyLevel selectedDifficulty = (DifficultyLevel) difficultyComboBox.getSelectedItem();
-        Game game = new Game(selectedDifficulty, isSinglePlayer, player);
+
+//        Polymorphism here
+        if (isSinglePlayer) {
+            gameInstance = new PlayWithAI(selectedDifficulty, player);
+        } else {
+            gameInstance = new Game(selectedDifficulty, isSinglePlayer, player);
+        }
 
         JFrame gameFrame = new JFrame("Pong Game");
         gameFrame.setSize(WIDTH, HEIGHT);
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setLocationRelativeTo(null);
-        gameFrame.getContentPane().add(new GamePanel(game, player));
+        gameFrame.getContentPane().add(new GamePanel(gameInstance, player));
 
         HomePage.this.setVisible(false);
         gameFrame.setVisible(true);

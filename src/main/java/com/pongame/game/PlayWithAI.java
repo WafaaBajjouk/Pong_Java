@@ -24,50 +24,29 @@ public class PlayWithAI extends Game {
 
     @Override
     public void updateGame() {
-        if (!gamePaused) {
-            this.getBall().move();
-            this.getPaddle1().followBall(this.getBall());
-            this.autoMoveAI();
-            this.collisionHandler.handleCollisions();
-            this.notifyObservers();
+        super.updateGame();
+        if (!gamePaused && isSinglePlayerMode) {
+            autoMoveAI();
         }
     }
-    private  int iterationCount = 0;
-    private  int moveIterations = 3;
-
-     void autoMoveAI() {
-        System.out.println(iterationCount);
 
 
-        if (iterationCount < moveIterations) {
-            iterationCount++;
 
-            System.out.println(iterationCount);
-            // Normal behavior: move towards the ball's position
-            if (this.getBall().getY() < aiPaddle.getY()) {
-                aiPaddle.moveUp(this.difficultyLevel.getPaddleSpeed());
-            } else if (this.getBall().getY() > aiPaddle.getY() + Paddle.HEIGHT) {
-                aiPaddle.moveDown(this.difficultyLevel.getPaddleSpeed());
+
+    public void autoMoveAI() {
+        int ballCenterY = this.ball.getY() + this.ball.getDiameter() / 2;
+        int aiPaddleCenterY = this.paddle2.getY() + Paddle.HEIGHT / 2;
+
+            if (ballCenterY < aiPaddleCenterY) {
+                this.paddle2.moveUp(this.difficultyLevel.getPaddleSpeed());
+            } else if (ballCenterY > aiPaddleCenterY) {
+                this.paddle2.moveDown(this.difficultyLevel.getPaddleSpeed());
             }
-        } else {
-            iterationCount++;
 
-            // New behavior after 7 iterations: move towards the ball's position * 2
-            int ballPositionY = this.getBall().getY();
-            int aiPaddlePositionY = aiPaddle.getY();
-
-            if (ballPositionY < aiPaddlePositionY) {
-                aiPaddle.moveUp(this.difficultyLevel.getPaddleSpeed() * 2);
-            } else if (ballPositionY > aiPaddlePositionY + Paddle.HEIGHT) {
-                aiPaddle.moveDown(this.difficultyLevel.getPaddleSpeed() * 2);
-            }
-        }
-        iterationCount++;
-        // Reset iteration count after 7 iterations
-        if (iterationCount > moveIterations + 7) {
-            iterationCount = 0;
-        }
     }
+
+
+
 
 
 }

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import static com.pongame.utils.Constants.*;
 
 
-class CollisionHandler  implements Serializable {
+public class CollisionHandler  implements Serializable {
     private final Game game;
 
     public CollisionHandler(Game game) {
@@ -22,11 +22,11 @@ class CollisionHandler  implements Serializable {
         }
     }
 
-    private void handlePaddleCollisions() {
+    public void handlePaddleCollisions() {
         if (game.getBall().getBounds().intersects(game.getPaddle1().getBounds())
                 || game.getBall().getBounds().intersects(game.getPaddle2().getBounds())) {
             game.getBall().reverseXDirection();
-//            System.out.println("Paddle collision detected. Ball's X-direction reversed.");
+            System.out.println("Paddle collision detected. Ball's X-direction reversed.");
         }
     }
 

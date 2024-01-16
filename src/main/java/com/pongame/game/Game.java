@@ -15,18 +15,20 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pongame.utils.Constants.WINNING_SCORE;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Game implements Serializable {
-    private static Game instance; // the single instance to implement the Singleton pattern
     private final Player player; // The currently logged-in player
 
-
-
-    private Ball ball;
+    protected Ball ball;
     DifficultyLevel difficultyLevel;
+    private Timer speedIncreaseTimer;
+
     CollisionHandler collisionHandler;
+
+    private long startTime;
+
 
     public boolean isSinglePlayerMode;
 
@@ -38,7 +40,7 @@ public class Game implements Serializable {
 
 
     public boolean gamePaused = false;
-    private boolean pausedOnce = false;
+    public boolean pausedOnce = false;
 
     private final int[] savedScores = new int[2];
     private int savedPaddleSpeed;
@@ -46,8 +48,8 @@ public class Game implements Serializable {
     private int savedBallY;
     private int savedPaddle1Y;
     private int savedPaddle2Y;
-    private Paddle paddle1;
-    private Paddle paddle2;
+    protected Paddle paddle1;
+    protected Paddle paddle2;
 
     // NOTEE:Constructor with dependency injection for the chosen difficulty level
     // Implements the Singleton pattern's private constructor to prevent direct
@@ -64,6 +66,8 @@ public class Game implements Serializable {
         this.scoreManager = ScoreManager.getInstance();
         initializeGameComponents(difficultyLevel,isSinglePlayerMode);
 
+
+
     }
 
 
@@ -71,16 +75,27 @@ public class Game implements Serializable {
     public void initializeGameComponents(DifficultyLevel difficultyLevel, boolean isSinglePlayerMode) {
         this.ball = new Ball(difficultyLevel);
         this.isSinglePlayerMode=isSinglePlayerMode;
+
         this.ball.setX(Constants.WINDOW_WIDTH / 2 - this.ball.getDiameter() / 2);
         this.ball.setY(Constants.WINDOW_HEIGHT / 2 - this.ball.getDiameter() / 2);
 
         this.paddle1 = new Paddle(0, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, difficultyLevel);
         this.paddle2 = new Paddle(Constants.WINDOW_WIDTH - Paddle.WIDTH,
                 Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, difficultyLevel);
-//
-//        System.out.println(" computer "+this.getPaddle2().getSpeed());
-//        System.out.println(" player "+this.getPaddle1().getSpeed());
-//        System.out.println(" ball "+this.getBall().getxSpeed());
+
+//       here I do the timer for calculating the time neeeded for increasing the ball speed
+        if (this.speedIncreaseTimer != null) {
+            this.speedIncreaseTimer.cancel();
+        }
+        this.speedIncreaseTimer = new Timer();
+        speedIncreaseTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                increaseSpeed();
+            }
+        }, 120000); // 120000 milliseconds = 2 minutes
+
+        System.out.println("BALL SPEE  X:"+this.getBall().getxSpeed()+"Y :"+this.getBall().getySpeed());
 
     }
 //
@@ -114,31 +129,31 @@ public class Game implements Serializable {
             observer.updateGameInfo(this.getBall(), this.getPaddle1(), this.getPaddle2());
         }
     }
-    public void updateGame() {
-        if (!gamePaused) {
-            this.ball.move();
-            this.paddle1.followBall(this.ball);
-            if (isSinglePlayerMode) {
-                autoMoveAI();
+        public void updateGame() {
+            if (!gamePaused) {
+                this.ball.move();
+                this.paddle1.followBall(this.ball);
+                this.collisionHandler.handleCollisions();
+                this.notifyObservers();
             }
-            this.collisionHandler.handleCollisions();
-            this.notifyObservers();
-
         }
+
+
+    public void increaseSpeed() {
+        System.out.println("Time to increase ball speed");
+
+        // Increase the speeds by 10%
+        double xSpeedIncrease = Math.abs(this.getBall().getxSpeed()) * 0.1;
+        double ySpeedIncrease = this.getBall().getySpeed() * 0.1;
+        this.getBall().setxSpeed(this.getBall().getxSpeed() + xSpeedIncrease);
+        this.getBall().setySpeed(this.getBall().getySpeed() + ySpeedIncrease);
+
+        System.out.println("New X speed: " + this.getBall().getxSpeed());
+        System.out.println("New Y speed: " + this.getBall().getySpeed());
     }
 
-    private void autoMoveAI() {
 
 
-        int ballCenterY = this.ball.getY() + this.ball.getDiameter() / 2;
-        int aiPaddleCenterY = this.paddle2.getY() + Paddle.HEIGHT / 2;
-
-        if (ballCenterY < aiPaddleCenterY) {
-            this.paddle2.moveUp(this.difficultyLevel.getPaddleSpeed());
-        } else if (ballCenterY > aiPaddleCenterY) {
-            this.paddle2.moveDown(this.difficultyLevel.getPaddleSpeed());
-        }
-    }
 
     private void saveGameState() {
         savedScores[0] = this.scoreManager.getPlayer1Score();
@@ -163,7 +178,7 @@ public class Game implements Serializable {
         return  this.gamePaused;
     }
 
-    void updateScoresAndResetBall() {
+    public void updateScoresAndResetBall() {
         if (this.ball.getX() + this.ball.getDiameter() <= 0) {
             this.scoreManager.player2Scores();
         } else {
@@ -184,9 +199,14 @@ public class Game implements Serializable {
 
     public void endGame() {
         this.gameActive = false;
+
+        if (this.speedIncreaseTimer != null) {
+            this.speedIncreaseTimer.cancel();
+            this.speedIncreaseTimer = null;
+        }
+
         if (player != null) {
             System.out.println("PlayerID   "+this.player.getId());
-
             saveGameToDatabase();
         }
     }
@@ -210,6 +230,7 @@ public class Game implements Serializable {
     public void initializeGame() {
 
         initializeGameComponents(difficultyLevel,this.isSinglePlayerMode);
+
         this.scoreManager.resetScores();
         this.gameActive = true;
         this.gamePaused = false;
@@ -254,5 +275,17 @@ public class Game implements Serializable {
 
     public Player getPlayer() {
         return this.player;
+    }
+
+    public void setBall(Ball ball) {
+        this.ball = ball;
+    }
+
+    public void setPaddle1(Paddle paddle1) {
+        this.paddle1 = paddle1;
+    }
+
+    public void setPaddle2(Paddle paddle2) {
+        this.paddle2 = paddle2;
     }
 }

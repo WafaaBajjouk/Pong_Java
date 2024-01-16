@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    id ("jacoco")
+
 }
 
 group = "org.example"
@@ -12,6 +14,7 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation ("org.mockito:mockito-core:3.12.4")
     implementation("mysql:mysql-connector-java:8.0.21")
 
 }
@@ -19,3 +22,4 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+

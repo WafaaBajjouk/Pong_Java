@@ -27,20 +27,20 @@ public class InputHandler implements KeyListener, Serializable {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_UP:
 //                        System.out.println("UP PRESSED");
-                        game.getPaddle1().moveUp(game.getDifficultyLevel().getPaddleSpeed());
+                        game.getPaddle2().moveUp(game.getDifficultyLevel().getPaddleSpeed());
                         break;
                     case KeyEvent.VK_DOWN:
 //                        System.out.println("DOWN PRESSED");
-                        game.getPaddle1().moveDown(game.getDifficultyLevel().getPaddleSpeed());
+                        game.getPaddle2().moveDown(game.getDifficultyLevel().getPaddleSpeed());
                         break;
                     case KeyEvent.VK_W:
                         System.out.println("W PRESSED");
 
-                        game.getPaddle2().moveUp(game.getDifficultyLevel().getPaddleSpeed());
+                        game.getPaddle1().moveUp(game.getDifficultyLevel().getPaddleSpeed());
                         break;
                     case KeyEvent.VK_S:
 //                        System.out.println("S PRESSED");
-                        game.getPaddle2().moveDown(game.getDifficultyLevel().getPaddleSpeed());
+                        game.getPaddle1().moveDown(game.getDifficultyLevel().getPaddleSpeed());
                         break;
                 }
             }
