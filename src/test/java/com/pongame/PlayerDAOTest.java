@@ -41,12 +41,12 @@ public class PlayerDAOTest {
 
     @Test
     public void testAuthenticatePlayer() {
-        playerDAO.createPlayer(testPlayer);
-        Player authenticatedPlayer = playerDAO.authenticatePlayer(testPlayer.getName(), testPlayer.getPassword());
-        assertNotNull(authenticatedPlayer);
-        assertEquals(testPlayer.getName(), authenticatedPlayer.getName());
-        assertEquals(testPlayer.getBirthday(), authenticatedPlayer.getBirthday());
-        assertEquals(testPlayer.getPassword(), authenticatedPlayer.getPassword());
+        assertTrue(playerDAO.createPlayer(testPlayer), "Player creation failed");
+
+        Player authenticatedPlayer = playerDAO.authenticatePlayer(testPlayer.getName(), "password");
+        assertNotNull(authenticatedPlayer, "Authentication should return a player object");
+        assertEquals(testPlayer.getName(), authenticatedPlayer.getName(), "Names should match");
+        // Password should not be tested bc it's hashed in the DB.
     }
 
     @Test

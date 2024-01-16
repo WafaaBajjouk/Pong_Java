@@ -47,7 +47,7 @@ public class PlayerAccountFormTest {
         when(birthdayField.getText()).thenReturn(birthday);
         when(passwordField.getPassword()).thenReturn(passwordChars);
         when(playerDAO.createPlayer(new Player(name, birthday, password))).thenReturn(true);
-//        playerAccountForm.registerButton.getActionListeners()[0].actionPerformed(null);
+        playerAccountForm.registerButton.getActionListeners()[0].actionPerformed(null);
         assertTrue(true);
     }
 
@@ -61,7 +61,7 @@ public class PlayerAccountFormTest {
         when(birthdayField.getText()).thenReturn(birthday);
         when(passwordField.getPassword()).thenReturn(passwordChars);
         when(playerDAO.createPlayer(new Player(name, birthday, password))).thenReturn(false);
-//        playerAccountForm.registerButton.getActionListeners()[0].actionPerformed(null);
+        playerAccountForm.registerButton.getActionListeners()[0].actionPerformed(null);
         assertFalse(false);
     }
 

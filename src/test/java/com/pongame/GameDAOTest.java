@@ -30,8 +30,10 @@ public class GameDAOTest {
     @BeforeEach
     public void setUp() {
         gameDAO = new GameDAO(connection);
-        testMatch = new Match(false, 10, 1);
+        testMatch = new Match(false, 10, 85);
     }
+
+
 
     @Test
     public void testSaveGame() {
@@ -52,6 +54,13 @@ public class GameDAOTest {
             assertNotNull(games.contains(testMatch));
         } catch (SQLException e) {
             fail("SQLException: " + e.getMessage());
+        }
+    }
+
+    @AfterAll
+    public static void closeDatabase() throws SQLException {
+        if (connection != null) {
+            connection.close();
         }
     }
 
