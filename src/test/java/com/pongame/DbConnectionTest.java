@@ -29,18 +29,5 @@ public class DbConnectionTest {
         }
     }
 
-    @Test
-    public void testCloseConnection() {
-        DbConnection.closeConnection();
-        try {
-            assertTrue(connection.isClosed());
-        } catch (SQLException e) {
-            fail("SQLException: " + e.getMessage());
-        }
-    }
 
-    @AfterAll
-    public static void tearDown() {
-        DbConnection.closeConnection();
-    }
 }

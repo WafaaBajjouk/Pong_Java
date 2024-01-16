@@ -50,9 +50,7 @@ public class PlayerDAOTest {
         // Create a test player and save it to the database
         playerDAO.createPlayer(testPlayer);
         Player authenticatedPlayer = playerDAO.authenticatePlayer(testPlayer.getName(), testPlayer.getPassword());
-        // the authenticated player is not null
         assertNotNull(authenticatedPlayer);
-        // the authenticated player has the same data as the test player
         assertEquals(testPlayer.getName(), authenticatedPlayer.getName());
         assertEquals(testPlayer.getBirthday(), authenticatedPlayer.getBirthday());
         assertEquals(testPlayer.getPassword(), authenticatedPlayer.getPassword());

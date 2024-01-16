@@ -49,8 +49,6 @@ public class UserProfileForm extends JFrame {
                 }
             }
         };
-
-        // Use GridBagLayout for organized layout
         GridBagLayout gridBagLayout = new GridBagLayout();
         panel.setLayout(gridBagLayout);
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
