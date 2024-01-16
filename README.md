@@ -50,7 +50,8 @@ The game adds an extra challenge by increasing the ball's speed by 10% after 2 m
 
 ## Play with Computer Mode - Play with AI
 
-In the "Play with Computer" mode, you can challenge yourself against an AI-controlled opponent. The computer-controlled paddle tracks the ball's vertical movement and attempts to intercept it, adding an extra layer of challenge for players in Single Player Mode.
+In the "Play with Computer" mode, you can challenge yourself against an AI-controlled opponent.
+The computer-controlled paddle tracks the ball's vertical movement and attempts to intercept it, adding an extra layer of challenge for players in Single Player Mode.
 
 ## Collision Handling and Ball Behavior
 
@@ -91,12 +92,17 @@ The game features a database system (MYSQL) that manages player login, account c
 
 The game's graphical user interface is developed using Java Swing,
 
-![Screenshot 2024-01-16 at 11.57.50.png](..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fr4%2Fyp2c4ft14_g_9nh2shb1swwh0000gp%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_N54pW8%2FScreenshot%202024-01-16%20at%2011.57.50.png)
+<img width="886" alt="Screenshot 2024-01-16 at 12 01 14" src="https://github.com/WaffIee/Pong_Java/assets/76793719/541bfc9e-1959-4ab4-83e7-7eddfd27248f">
+
+
+<img width="893" alt="Screenshot 2024-01-16 at 12 01 57" src="https://github.com/WaffIee/Pong_Java/assets/76793719/dbd21368-15e7-4f11-b1a4-8153e3c4e6fe">
 
 ---
 
-## Future Features
+## Future Features JAVA SOCKETS
 
-We are working on implementing a socket-based multiplayer feature that will allow players to enjoy the game from different locations. Stay tuned for more updates and exciting gameplay possibilities!
+IAM WORKING on implementing a socket-based multiplayer feature that will allow players to enjoy the game from different locations.
+
+JAR FILE = in build/libs
 
 ---
