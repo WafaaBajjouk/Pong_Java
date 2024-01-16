@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.mindrot.jbcrypt.BCrypt;
+
+
 public class PlayerDAO {
     private Connection connection;
 
@@ -16,11 +19,12 @@ public class PlayerDAO {
 
     public boolean createPlayer(Player player) {
         String sql = "INSERT INTO Player (name, birthday, password) VALUES (?, ?, ?)";
+        String hashedPassword = BCrypt.hashpw(player.getPassword(), BCrypt.gensalt());
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, player.getName());
-            preparedStatement.setString(2, player.getBirthday()); // Set as a string
-            preparedStatement.setString(3, player.getPassword());
+            preparedStatement.setString(2, player.getBirthday());
+            preparedStatement.setString(3, hashedPassword);
 
             int rowsInserted = preparedStatement.executeUpdate();
             return rowsInserted > 0;
@@ -31,32 +35,37 @@ public class PlayerDAO {
     }
 
     public Player authenticatePlayer(String name, String password) {
-        String sql = "SELECT * FROM Player WHERE name = ? AND password = ?";
+        String sql = "SELECT * FROM Player WHERE name = ?";
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, name);
-            preparedStatement.setString(2, password);
-
             ResultSet resultSet = preparedStatement.executeQuery();
+
             if (resultSet.next()) {
                 int id = resultSet.getInt("Id");
                 String playerName = resultSet.getString("name");
                 String playerBirthday = resultSet.getString("birthday");
-                String playerPassword = resultSet.getString("password");
+                String storedHashedPassword = resultSet.getString("password");
 
-                Player player = new Player( playerName, playerBirthday, playerPassword);
-                player.setId(id);
-                return player;
+                if (BCrypt.checkpw(password, storedHashedPassword)) {
+                    Player player = new Player(playerName, playerBirthday, storedHashedPassword);
+                    player.setId(id);
+                    return player;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return null;
     }
+
     public boolean changePassword(int playerId, String newPassword) {
         String sql = "UPDATE Player SET password = ? WHERE Id = ?";
+        String hashedNewPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(1, hashedNewPassword);
             preparedStatement.setInt(2, playerId);
 
             int rowsUpdated = preparedStatement.executeUpdate();
@@ -66,5 +75,6 @@ public class PlayerDAO {
             return false;
         }
     }
+
 
 }

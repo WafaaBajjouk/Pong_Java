@@ -58,5 +58,11 @@ public class PlayerDAOTest {
 
     }
 
+    @Test
+    public void testPasswordEncryption() {
+
+    }
+
+
 
 }

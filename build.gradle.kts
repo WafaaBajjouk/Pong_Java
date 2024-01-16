@@ -15,6 +15,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.mockito:mockito-core:3.12.4")
     implementation("mysql:mysql-connector-java:8.0.21")
+    implementation ("org.mindrot:jbcrypt:0.4")
+
 }
 
 tasks.test {
