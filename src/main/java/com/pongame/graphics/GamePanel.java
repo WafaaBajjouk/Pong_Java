@@ -42,33 +42,26 @@ public class GamePanel extends JPanel implements KeyListener {
         });
         timer.start();
 
-        // Load background image
         try {
-            backgroundImage = ImageIO.read(new File("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/black.png")); // Replace with your image path
+            backgroundImage = ImageIO.read(new File("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/black.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // Draw background image
         if (backgroundImage != null) {
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         } else {
-            // Fallback to black background if image fails to load
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
         }
 
         if (game.isGameActive()) {
-            // Draw middle line
             g.setColor(Color.WHITE);
             g.fillRect(getWidth() / 2 - Constants.LINE_WIDTH / 2, 0, Constants.LINE_WIDTH, getHeight());
-
-            // Draw paddles
             Paddle paddle1 = game.getPaddle1();
             Paddle paddle2 = game.getPaddle2();
             g.setColor(Color.BLUE); // Make one paddle blue
@@ -81,11 +74,7 @@ public class GamePanel extends JPanel implements KeyListener {
             g.setColor(Color.WHITE);
 
             g.fillOval(ball.getX(), ball.getY(), ball.getDiameter(), ball.getDiameter());
-
-            // Display scores
             displayScores(g);
-
-            // if the game is paused, show notification
             if (game.gamePaused) {
                 this.displayPauseNotification(g);
             }
@@ -111,7 +100,7 @@ public class GamePanel extends JPanel implements KeyListener {
         g.drawString("Game Over! Press R to restart.", getWidth() / 2 - 220, getHeight() / 2 + 150);
     }
 
-    void returnToMainMenu() {
+    public void returnToMainMenu() {
         game.initializeGame();
         this.setVisible(false);
         HomePage homePage = new HomePage(this.Loggedplayer);
@@ -126,16 +115,13 @@ public class GamePanel extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        // Implementation for keyPressed
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // Implementation for keyTyped
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // Implementation for keyReleased
     }
 }

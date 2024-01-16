@@ -10,17 +10,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class HomePage extends JFrame {
-    private final JComboBox<DifficultyLevel> difficultyComboBox;
-    private final JButton startSinglePlayerButton;
-    private final JButton startMultiPlayerButton;
-    private final JButton createAccountButton;
-    private final JButton loginButton;
-    private final JButton profileButton;
+    public JComboBox<DifficultyLevel> difficultyComboBox;
+    public final JButton startSinglePlayerButton;
+    public final JButton startMultiPlayerButton;
+    public final JButton createAccountButton;
+    public final JButton loginButton;
+    public final JButton profileButton;
     private static final int WIDTH = 900;
     private static final int HEIGHT = 600;
     private static final int ICON_WIDTH = 30;
     private static final int ICON_HEIGHT = 30;
-    Game gameInstance ;
+    public Game gameInstance ;
 
 
     public HomePage(Player player) {
@@ -114,10 +114,10 @@ public class HomePage extends JFrame {
         startSinglePlayerButton.addActionListener(e -> startGame(true, player));
     }
 
-    private void startGame(boolean isSinglePlayer, Player player) {
+
+    public void startGame(boolean isSinglePlayer, Player player) {
         DifficultyLevel selectedDifficulty = (DifficultyLevel) difficultyComboBox.getSelectedItem();
 
-//        Polymorphism here
         if (isSinglePlayer) {
             gameInstance = new PlayWithAI(selectedDifficulty, player);
         } else {
@@ -132,10 +132,10 @@ public class HomePage extends JFrame {
 
         HomePage.this.setVisible(false);
         gameFrame.setVisible(true);
-        System.out.println("Game Started - Difficulty: " + selectedDifficulty + ", Mode: " + (isSinglePlayer ? "Single Player" : "Multiplayer"));
     }
 
-    private ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
+
+    public ImageIcon resizeIcon(ImageIcon icon, int width, int height) {
         Image img = icon.getImage();
         Image resizedImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(resizedImage);

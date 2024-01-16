@@ -33,11 +33,9 @@ public class Game implements Serializable {
     public boolean isSinglePlayerMode;
 
 
-
     private boolean gameActive = true;
     private final List<Observer> observers = new ArrayList<>();
     private final ScoreManager scoreManager;
-
 
     public boolean gamePaused = false;
     public boolean pausedOnce = false;
@@ -54,21 +52,17 @@ public class Game implements Serializable {
     // NOTEE:Constructor with dependency injection for the chosen difficulty level
     // Implements the Singleton pattern's private constructor to prevent direct
     // external instantiation of the Game class.
-    public Game(DifficultyLevel difficultyLevel,boolean isSinglePlayerMode ,Player player) {
-
-
+    public Game(DifficultyLevel difficultyLevel, boolean isSinglePlayerMode, Player player) {
         this.player = player;
-
         this.isSinglePlayerMode = isSinglePlayerMode;
 
-        this.difficultyLevel=difficultyLevel;
+        this.difficultyLevel = difficultyLevel;
+
         collisionHandler = new CollisionHandler(this);
         this.scoreManager = ScoreManager.getInstance();
-        initializeGameComponents(difficultyLevel,isSinglePlayerMode);
-
-
-
+        initializeGameComponents(difficultyLevel, isSinglePlayerMode);
     }
+
 
 
     // Initialize game components  Ball and Paddles
@@ -287,5 +281,9 @@ public class Game implements Serializable {
 
     public void setPaddle2(Paddle paddle2) {
         this.paddle2 = paddle2;
+    }
+
+    public boolean gamePaused() {
+        return this.gamePaused;
     }
 }

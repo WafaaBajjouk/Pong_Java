@@ -11,6 +11,8 @@ public class Paddle  implements Serializable {
     public static final int WIDTH = 20;
     public static final int HEIGHT = 100;
     private int x;
+    public   int initx;
+    public static int inity;
     private int y;
 
     private int speed;
@@ -19,6 +21,12 @@ public class Paddle  implements Serializable {
         this.speed= difficultyLevel.getPaddleSpeed();
         this.x = x;
         this.y = y;
+        this.initx=x;
+        this.inity=y;
+    }
+
+    public Paddle() {
+
     }
 
     public void draw(Graphics g) {

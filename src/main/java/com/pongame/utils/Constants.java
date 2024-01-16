@@ -13,10 +13,9 @@ public interface Constants {
     int INITIAL_PADDLE_X = 0;
     int INITIAL_PADDLE_Y = Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2;
     int GAME_SPEED = 2;
-
-    String DB_URL = "jdbc:mysql://localhost:3306/PongGame";
-    String DB_USER = "root";
-    String DB_PASSWORD = "wbjk1205";
+    public static final String DB_URL = "jdbc:mysql://localhost/PongGame";
+    public static final String DB_USER = "root";
+    public static final String DB_PASSWORD = "wbjk1205";
 
 }
 

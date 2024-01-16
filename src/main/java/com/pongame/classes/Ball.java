@@ -24,6 +24,11 @@ public class Ball  implements Serializable {
         this.diameter = Constants.BALL_DIAMETERE;
         this.xSpeed = difficulty.getBallSpeed();
         this.ySpeed = difficulty.getBallSpeed();
+        this.difficulty=difficulty;
+    }
+
+    public Ball() {
+
     }
 
     public void move() {

@@ -20,7 +20,6 @@ public class PlayerDAOTest {
 
     @BeforeAll
     public static void setUpDatabase() {
-        // Establish a database connection before running tests
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost/PongGame", "root", "wbjk1205");
         } catch (SQLException e) {
@@ -30,24 +29,18 @@ public class PlayerDAOTest {
 
     @BeforeEach
     public void setUp() {
-        // Create a new PlayerDAO instance for each test
         playerDAO = new PlayerDAO(connection);
-
-        // Create a test Player
         testPlayer = new Player("testuser", "2000-05-12", "password");
     }
 
     @Test
     public void testCreatePlayer() {
         assertTrue(playerDAO.createPlayer(testPlayer));
-
-        // Verify that the player ID is set after creation
         assertNotNull(testPlayer.getId() > 0);
     }
 
     @Test
     public void testAuthenticatePlayer() {
-        // Create a test player and save it to the database
         playerDAO.createPlayer(testPlayer);
         Player authenticatedPlayer = playerDAO.authenticatePlayer(testPlayer.getName(), testPlayer.getPassword());
         assertNotNull(authenticatedPlayer);
@@ -58,7 +51,6 @@ public class PlayerDAOTest {
 
     @Test
     public void testChangePassword() {
-        // Create a test player and save it to the database
         playerDAO.createPlayer(testPlayer);
         String newPassword = "newpassword";
         playerDAO.changePassword(testPlayer.getId(), newPassword);

@@ -1,8 +1,9 @@
 package com.pongame.database;
 
+import com.pongame.utils.Constants;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DbConnection {
@@ -18,7 +19,7 @@ public class DbConnection {
                 if (connection == null) {
                     try {
                         Class.forName("com.mysql.cj.jdbc.Driver");
-                        connection = DriverManager.getConnection("jdbc:mysql://localhost/PongGame", "root", "wbjk1205");
+                        connection = DriverManager.getConnection(Constants.DB_URL, Constants.DB_USER, Constants.DB_PASSWORD);
                         System.out.println("Connection Success");
                     } catch (SQLException | ClassNotFoundException e) {
                         System.err.println("SQL Exception.");
@@ -43,8 +44,6 @@ public class DbConnection {
 
     public static void main(String[] args) {
         Connection con = DbConnection.getInstance();
-
-
         DbConnection.closeConnection();
     }
 }

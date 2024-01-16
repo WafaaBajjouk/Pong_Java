@@ -1,5 +1,6 @@
 package com.pongame;
 
+import com.pongame.classes.Ball;
 import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
 import com.pongame.game.Game;
@@ -33,6 +34,15 @@ public class GameTest {
         assertEquals(player, game.getPlayer());
     }
 
+    @Test
+    public void testIncreaseSpeed() {
+        Game game = new Game(DifficultyLevel.SLOW, true, new Player("user", "2000-05-12", "user"));
+        double initialXSpeed = game.getBall().getxSpeed();
+        double initialYSpeed = game.getBall().getySpeed();
+        game.increaseSpeed();
+        assertTrue(game.getBall().getxSpeed() > initialXSpeed);
+        assertTrue(game.getBall().getySpeed() > initialYSpeed);
+    }
     @Test
     public void testGameInitializationWithNullPlayer() {
         Game nullPlayerGame = new Game(DifficultyLevel.MEDIUM, false, null);
@@ -91,6 +101,7 @@ public class GameTest {
         assertNotNull(playWithAI.getPlayer());
         assertEquals(player, playWithAI.getPlayer());
     }
+
 
 
 }

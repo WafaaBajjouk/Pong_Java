@@ -27,7 +27,7 @@ public class InputHandler implements KeyListener, Serializable {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_UP:
 //                        System.out.println("UP PRESSED");
-                        game.getPaddle2().moveUp(game.getDifficultyLevel().getPaddleSpeed());
+                        game.getPaddle2().moveUp(this.game.getDifficultyLevel().getPaddleSpeed());
                         break;
                     case KeyEvent.VK_DOWN:
 //                        System.out.println("DOWN PRESSED");

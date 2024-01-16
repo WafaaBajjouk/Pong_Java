@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 public class LoginForm extends JFrame {
     private JTextField nameField;
     private JPasswordField passwordField;
-    private PlayerDAO playerDAO;
+    public PlayerDAO playerDAO;
 
     public LoginForm() {
         setTitle("Login Form");

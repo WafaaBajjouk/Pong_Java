@@ -36,7 +36,6 @@ public class GameDAOTest {
     @Test
     public void testSaveGame() {
         try {
-            // Save the test match to the database
             gameDAO.saveGame(testMatch);
             assertTrue(testMatch.getId() > 0);
         } catch (SQLException e) {
@@ -55,6 +54,7 @@ public class GameDAOTest {
             fail("SQLException: " + e.getMessage());
         }
     }
+
 
 
 

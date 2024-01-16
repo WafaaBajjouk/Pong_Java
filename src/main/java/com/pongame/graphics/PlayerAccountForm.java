@@ -11,9 +11,12 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 
 public class PlayerAccountForm extends JFrame {
-    private JTextField nameField;
-    private JTextField birthdayField;
-    private JPasswordField passwordField;
+    public JTextField nameField;
+    public JTextField birthdayField;
+    public JPasswordField passwordField;
+
+    public    PlayerDAO playerDAO;
+    public JButton registerButton;
 
     public PlayerAccountForm() {
         setTitle("Player Account Registration");
@@ -32,7 +35,7 @@ public class PlayerAccountForm extends JFrame {
         JLabel passwordLabel = new JLabel("Password:");
         passwordField = new JPasswordField();
 
-        JButton registerButton = new JButton("Register");
+         registerButton = new JButton("Register");
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -41,7 +44,7 @@ public class PlayerAccountForm extends JFrame {
                 char[] passwordChars = passwordField.getPassword();
                 String password = new String(passwordChars);
                 Player newPlayer = new Player(name, birthday, password);
-                PlayerDAO playerDAO = new PlayerDAO(DbConnection.getInstance());
+                 playerDAO = new PlayerDAO(DbConnection.getInstance());
                 boolean registrationSuccess = playerDAO.createPlayer(newPlayer);
 
                 if (registrationSuccess) {
@@ -68,13 +71,5 @@ public class PlayerAccountForm extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                PlayerAccountForm form = new PlayerAccountForm();
-                form.setVisible(true);
-            }
-        });
-    }
+
 }

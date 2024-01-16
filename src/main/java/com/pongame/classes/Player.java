@@ -12,6 +12,10 @@ public class Player {
         this.password = password;
     }
 
+    public Player() {
+
+    }
+
     public int getId() {
         return id;
     }
