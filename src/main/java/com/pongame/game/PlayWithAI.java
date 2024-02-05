@@ -21,7 +21,6 @@ public class PlayWithAI extends Game {
 
         }
     }
-
     @Override
     public void updateGame() {
         super.updateGame();
@@ -29,10 +28,6 @@ public class PlayWithAI extends Game {
             autoMoveAI();
         }
     }
-
-
-
-
     public void autoMoveAI() {
         int ballCenterY = this.ball.getY() + this.ball.getDiameter() / 2;
         int aiPaddleCenterY = this.paddle2.getY() + Paddle.HEIGHT / 2;

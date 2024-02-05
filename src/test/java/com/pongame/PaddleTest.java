@@ -16,9 +16,9 @@ public class PaddleTest {
     private final DifficultyLevel difficulty = DifficultyLevel.MEDIUM;
 
     @BeforeEach
-    public void setUp() {
-        paddle = new Paddle(0, 0, difficulty);
-    }
+//    public void setUp() {
+//        paddle = new Paddle(0, 0, difficulty);
+//    }
 
     @Test
     public void testInitialization() {

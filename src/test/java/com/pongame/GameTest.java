@@ -39,7 +39,7 @@ public class GameTest {
         Game game = new Game(DifficultyLevel.SLOW, true, new Player("user", "2000-05-12", "user"));
         double initialXSpeed = game.getBall().getxSpeed();
         double initialYSpeed = game.getBall().getySpeed();
-        game.increaseSpeed();
+        game.getBall().increaseSpeed();
         assertTrue(game.getBall().getxSpeed() > initialXSpeed);
         assertTrue(game.getBall().getySpeed() > initialYSpeed);
     }

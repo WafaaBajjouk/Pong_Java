@@ -33,10 +33,11 @@ public class GamePanel extends JPanel implements KeyListener {
         InputHandler inputHandler = new InputHandler(game, this);
         addKeyListener(inputHandler);
 
-        Timer timer = new Timer(Constants.GAME_SPEED, new ActionListener() {
+        Timer timer = new Timer(Constants.GAME_LOOP, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 game.updateGame();
+//                This means that updateGame() is executed repeatedly at the interval set by the timer= GAME LOOP CONSTANT
                 repaint();
             }
         });
@@ -99,7 +100,6 @@ public class GamePanel extends JPanel implements KeyListener {
         g.drawString("Player 2: " + scoreManager.getPlayer2Score(), getWidth() / 2 - 150, getHeight() / 2 + 50);
         g.drawString("Game Over! Press R to restart.", getWidth() / 2 - 220, getHeight() / 2 + 150);
     }
-
     public void returnToMainMenu() {
         game.initializeGame();
         this.setVisible(false);

@@ -49,6 +49,7 @@ public class LoginForm extends JFrame {
 
                 nameField.setText("");
                 passwordField.setText("");
+                dispose();
             }
         });
 

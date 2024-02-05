@@ -1,6 +1,7 @@
 package com.pongame.classes;
 
 import com.pongame.config.DifficultyLevel;
+import com.pongame.game.Game;
 import com.pongame.utils.Constants;
 
 import java.awt.*;
@@ -14,30 +15,21 @@ public class Paddle  implements Serializable {
     public   int initx;
     public static int inity;
     private int y;
-
     private int speed;
 
-    public Paddle(int x, int y, DifficultyLevel difficultyLevel) {
+    private final Game game;
+
+    public Paddle(int x, int y, DifficultyLevel difficultyLevel, Game game) {
         this.speed= difficultyLevel.getPaddleSpeed();
         this.x = x;
         this.y = y;
         this.initx=x;
         this.inity=y;
+        this.game = game;
     }
 
-    public Paddle() {
-
-    }
-
-    public void draw(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, WIDTH, HEIGHT);
-    }
-
-    public void followBall(Ball ball) {
-
-    }
     public void moveUp(int speed) {
+
         y -= this.speed;
         if (y < 0) {
             y = 0;
@@ -45,6 +37,7 @@ public class Paddle  implements Serializable {
     }
 
     public void moveDown(int speed) {
+//        y coordinate increases as you move down.bc , TOP left point is (0,0)
         y += speed;
         if (y + HEIGHT > Constants.WINDOW_HEIGHT) {
             y = Constants.WINDOW_HEIGHT - HEIGHT;
@@ -57,9 +50,19 @@ public class Paddle  implements Serializable {
     }
 
     public Rectangle getBounds() {
+
         return new Rectangle(x, y, WIDTH, HEIGHT);
     }
 
+
+
+    public void handlePaddleCollisions() {
+        if (game.getBall().getBounds().intersects(this.getBounds())
+                || game.getBall().getBounds().intersects(this.getBounds())) {
+            game.getBall().reverseXDirection();
+            System.out.println("Paddle collision detected. Ball's X-direction reversed.");
+        }
+    }
 
 
     // Getters and setters

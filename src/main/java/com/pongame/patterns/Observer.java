@@ -6,7 +6,6 @@ import com.pongame.classes.Paddle;
 public interface Observer {
     void update();
     void updateGameInfo(Ball ball, Paddle paddle1, Paddle paddle2);
-    void returnToMainMenu();
 
 
 }

@@ -59,7 +59,6 @@ public class PlayerDAO {
 
         return null;
     }
-
     public boolean changePassword(int playerId, String newPassword) {
         String sql = "UPDATE Player SET password = ? WHERE Id = ?";
         String hashedNewPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());

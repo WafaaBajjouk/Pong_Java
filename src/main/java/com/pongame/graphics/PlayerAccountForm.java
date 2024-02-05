@@ -52,10 +52,12 @@ public class PlayerAccountForm extends JFrame {
                     nameField.setText("");
                     birthdayField.setText("");
                     passwordField.setText("");
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(PlayerAccountForm.this, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+
         });
 
         panel.add(nameLabel);

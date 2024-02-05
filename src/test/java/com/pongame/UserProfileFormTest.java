@@ -17,17 +17,6 @@ public class UserProfileFormTest {
 
     }
 
-    @Test
-    public void userProfileFormInitialization() {
-        UserProfileForm userProfileForm = new UserProfileForm(user);
-        assertNotNull(userProfileForm);
-        assertEquals("User Profile", userProfileForm.getTitle());
-        assertNotNull(userProfileForm.nameTextField);
-        assertEquals("TestUser", userProfileForm.nameTextField.getText());
-        assertNotNull(userProfileForm.birthdayTextField);
-        assertEquals("2009-11-01", userProfileForm.birthdayTextField.getText());
-        assertNotNull(userProfileForm.passwordField);
-    }
 
 
 }

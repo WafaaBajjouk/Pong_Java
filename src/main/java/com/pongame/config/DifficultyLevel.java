@@ -12,7 +12,6 @@ public enum DifficultyLevel {
         this.paddleSpeed = paddleSpeed;
     }
 
-
     public int getBallSpeed() {
         return this.ballSpeed;
     }
