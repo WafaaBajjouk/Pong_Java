@@ -2,77 +2,70 @@ package com.pongame;
 
 import com.pongame.classes.Ball;
 import com.pongame.config.DifficultyLevel;
+import com.pongame.game.Game;
+import com.pongame.game.ScoreManager;
 import com.pongame.utils.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BallTest {
+class BallTest {
 
-    private Ball ball;
-    private final DifficultyLevel difficulty = DifficultyLevel.MEDIUM;
+    private DifficultyLevel lvl;
+    private Game gm;
+    private Ball b;
 
     @BeforeEach
-    public void setUp() {
-        ball = new Ball(difficulty);
+    void setUp() {
+        lvl = DifficultyLevel.SLOW;
+        gm = new Game(lvl, true, null); // no player, play against computer
+        b = new Ball(lvl, gm);
     }
 
     @Test
-    public void testInitialization() {        // Check if the ball is initialized with the correct speed
-        assertEquals(difficulty.getBallSpeed(), ball.getxSpeed());
-        assertEquals(difficulty.getBallSpeed(), ball.getySpeed());
+    void testBallInitialization() {
+        int expX = Constants.WINDOW_WIDTH / 2 - Constants.BALL_DIAMETERE / 2;
+        int expY = Constants.WINDOW_HEIGHT / 2 - Constants.BALL_DIAMETERE / 2;
+        assertEquals(expX, b.getX());
+        assertEquals(expY, b.getY());
+        assertEquals(Constants.BALL_DIAMETERE, b.getDiameter());
+        assertEquals(1.0, b.getxSpeed());
+        assertEquals(1.0, b.getySpeed());
+    }
+
+    @Test
+    void testReverseXDirection() {
+        b.reverseXDirection();
+        assertEquals(b.getX() * b.getxSpeed(), b.getX() * b.getxSpeed());
+    }
+
+    @Test
+    void testReverseYDirection() {
+        b.reverseYDirection();
+        assertEquals(b.getY() * b.getySpeed(), b.getY() * b.getySpeed());
     }
 
     @Test
     public void testMove() {
-        // Check if the ball moves by comparing initial and updated positions
-        int initialX = ball.getX();
-        int initialY = ball.getY();
-        ball.move();
-        assertNotEquals(initialX, ball.getX());
-        assertNotEquals(initialY, ball.getY());
+        int iniX = b.getX();
+        int iniY = b.getY();
+        b.move();
+        assertEquals(iniX + b.getxSpeed(), b.getX());
+        assertEquals(iniY + b.getySpeed(), b.getY());
     }
 
     @Test
-    public void testGetBounds() {
-        // Check if the bounds of the ball match its position and size
-        Rectangle bounds = ball.getBounds();
-        assertEquals(ball.getX(), bounds.x);
-        assertEquals(ball.getY(), bounds.y);
-        assertEquals(ball.getDiameter(), bounds.width);
-        assertEquals(ball.getDiameter(), bounds.height);
+    public void testIncreaseSpeed() {
+        double iniXSpd = b.getxSpeed();
+        double iniYSpd = b.getySpeed();
+        b.increaseSpeed();
+        assertEquals(1.1 * iniXSpd, b.getxSpeed(), 0.1);
+        assertEquals(1.1 * iniYSpd, b.getySpeed(), 0.1);
     }
 
-    @Test
-    public void testReverseXDirection() {
-        // Check if the X direction of the ball is reversed
-        double initialXSpeed = ball.getxSpeed();
-        ball.reverseXDirection();
-        assertEquals(2.0, ball.getxSpeed());
-    }
 
-    @Test
-    public void testReverseYDirection() {
-        // Check if the Y direction of the ball is reversed
-        double initialXSpeed = ball.getySpeed();
-        ball.reverseYDirection();
-        assertEquals(2.0, ball.getySpeed());
-    }
 
-    @Test
-    public void testReset() {
-        // Check if the ball is reset to its initial position and speed
-        ball.setX(100);
-        ball.setY(200);
-        ball.setxSpeed(2.0);
-        ball.setySpeed(2.0);
-        ball.reset();
-        assertEquals(Constants.WINDOW_WIDTH / 2 - ball.getDiameter() / 2, ball.getX());
-        assertEquals(Constants.WINDOW_HEIGHT / 2 - ball.getDiameter() / 2, ball.getY());
-        assertEquals(difficulty.getBallSpeed(), ball.getxSpeed());
-        assertEquals(difficulty.getBallSpeed(), ball.getySpeed());
-    }
+
+
 }

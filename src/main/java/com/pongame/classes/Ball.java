@@ -10,24 +10,27 @@ import java.io.Serializable;
 public class Ball  implements Serializable {
     private int x;
     private int y;
-    private int diameter;
     private static final Color BALL_COLOR = Color.RED;
     private double xSpeed;
     private double ySpeed;
     private DifficultyLevel difficulty;
-
+    private int diametre;
     private  Game game;
 
 
-    public Ball(  DifficultyLevel  difficulty, Game game) {
-        this.x = Constants.WINDOW_WIDTH / 2 - this.diameter / 2;
-        this.y = Constants.WINDOW_HEIGHT / 2 - this.diameter / 2;
-        this.diameter = Constants.BALL_DIAMETERE;
+
+    public Ball(DifficultyLevel  difficulty, Game game) {
+        System.out.println("ball created ");
+        this.x = Constants.WINDOW_WIDTH / 2 - Constants.BALL_DIAMETERE / 2;
+        this.y = Constants.WINDOW_HEIGHT / 2 - Constants.BALL_DIAMETERE / 2;
         this.xSpeed = difficulty.getBallSpeed();
         this.ySpeed = difficulty.getBallSpeed();
         this.difficulty=difficulty;
         this.game=game;
+        this.diametre=Constants.BALL_DIAMETERE;
     }
+
+
     public void move() {
         x += xSpeed;
         y += ySpeed;
@@ -39,21 +42,22 @@ public class Ball  implements Serializable {
     public void reverseYDirection() {
         ySpeed = -ySpeed;
     }
+
     public void reset() {
         // Reset the ball to the center
-        this.x = Constants.WINDOW_WIDTH / 2 - this.diameter / 2;
-        this.y = Constants.WINDOW_HEIGHT / 2 - this.diameter / 2;
+        this.x = Constants.WINDOW_WIDTH / 2 - Constants.BALL_DIAMETERE / 2;
+        this.y = Constants.WINDOW_HEIGHT / 2 - Constants.BALL_DIAMETERE / 2;
         this.xSpeed = difficulty.getBallSpeed();
         this.ySpeed = difficulty.getBallSpeed();
     }
 
     public void draw(Graphics g) {
         g.setColor(BALL_COLOR);
-        g.fillOval(x, y, diameter, diameter);
+        g.fillOval(x, y, Constants.BALL_DIAMETERE, Constants.BALL_DIAMETERE);
     }
 
     public Rectangle getBounds() {
-        Rectangle r=new Rectangle(x, y, diameter, diameter);
+        Rectangle r=new Rectangle(x, y, Constants.BALL_DIAMETERE, Constants.BALL_DIAMETERE);
         return r;
     }
 
@@ -87,9 +91,6 @@ public class Ball  implements Serializable {
         return y;
     }
 
-    public int getDiameter() {
-        return diameter;
-    }
 
     public double getxSpeed() {
         return Math.abs(xSpeed);
@@ -107,8 +108,12 @@ public class Ball  implements Serializable {
         this.y = y;
     }
 
-    public void setDiameter(int diameter) {
-        this.diameter = diameter;
+    public int getDiameter() {
+        return diametre;
+    }
+
+    public void setDiametre(int diametre) {
+        this.diametre = diametre;
     }
 
     public void setxSpeed(double xSpeed) {
@@ -125,15 +130,15 @@ public class Ball  implements Serializable {
 
     public void handleWallCollisions() {
 
-        if (this.getY() <= 0 || this.getY() + this.getDiameter() >= Constants.WINDOW_HEIGHT) {
+        if (this.getY() <= 0 || this.getY() + Constants.BALL_DIAMETERE >= Constants.WINDOW_HEIGHT) {
             this.reverseYDirection();
             System.out.println("Wall collision detected. Ball's Y-direction reversed.");
         }
 
-        if (this.getX() + this.getDiameter() <= 0 || this.getX() >= Constants.WINDOW_WIDTH) {
+        if (this.getX() + Constants.BALL_DIAMETERE <= 0 || this.getX() >= Constants.WINDOW_WIDTH) {
             System.out.println("Edge collision detected. Updating scores and resetting the ball.");
 
-            if (this.getX() + this.getDiameter() <= 0) {
+            if (this.getX() + Constants.BALL_DIAMETERE <= 0) {
                 this.game.getScoreManager().player2Scores();
             } else {
                 this.game.getScoreManager().player1Scores();
@@ -142,6 +147,8 @@ public class Ball  implements Serializable {
             this.reset();
         }
     }
+
+
 
 
 }

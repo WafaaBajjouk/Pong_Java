@@ -47,11 +47,10 @@ public class Game implements Serializable {
 
     // Initialize game components  Ball and Paddles
     public void initializeGameComponents(DifficultyLevel difficultyLevel, boolean isSinglePlayerMode) {
-        Ball cball= this.ball = new Ball(difficultyLevel,this);
+        this.ball = new Ball(difficultyLevel,this);
         this.isSinglePlayerMode=isSinglePlayerMode;
 
-        this.ball.setX(Constants.WINDOW_WIDTH / 2 - this.ball.getDiameter() / 2);
-        this.ball.setY(Constants.WINDOW_HEIGHT / 2 - this.ball.getDiameter() / 2);
+
 
         this.paddle1 = new Paddle(0, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, difficultyLevel,this);
         this.paddle2 = new Paddle(Constants.WINDOW_WIDTH - Paddle.WIDTH,
@@ -65,7 +64,7 @@ public class Game implements Serializable {
             this.speedIncreaseTimer.cancel();
         }
         this.speedIncreaseTimer = new Timer();
-
+        Ball cball=this.ball;
         speedIncreaseTimer.schedule(new TimerTask() {
             @Override
             public void run() {
