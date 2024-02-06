@@ -21,7 +21,7 @@ public class PlayWithAITest {
     public void setUp() {
         Ball ball = mock(Ball.class);
         Paddle paddle2 = mock(Paddle.class);
-        playWithAI = new PlayWithAI(DifficultyLevel.SLOW, null);
+        playWithAI = new PlayWithAI(DifficultyLevel.SLOW, null,null);
         playWithAI.setBall(ball);
         playWithAI.setPaddle2(paddle2);
     }
@@ -45,7 +45,7 @@ public class PlayWithAITest {
     @Test
     public void testAutoMoveAI() {
         Player player = new Player("user", "2000-05-12", "user");
-        PlayWithAI playWithAI = new PlayWithAI(DifficultyLevel.MEDIUM, player);
+        PlayWithAI playWithAI = new PlayWithAI(DifficultyLevel.MEDIUM, player,null);
         //  above the AI paddle
         playWithAI.getBall().setY(playWithAI.getPaddle2().getY() - 10);
         playWithAI.updateGame();

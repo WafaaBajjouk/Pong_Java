@@ -15,7 +15,7 @@ public class PaddleTest {
 
     @BeforeEach
     public void setUp() {
-        paddle = new Paddle(0, 0, DifficultyLevel.SLOW, new Game(DifficultyLevel.SLOW,true,null));
+        paddle = new Paddle(0, 0, DifficultyLevel.SLOW, new Game(DifficultyLevel.SLOW,true,null,null));
     }
 
     @Test

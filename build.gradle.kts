@@ -16,6 +16,8 @@ dependencies {
     testImplementation("org.mockito:mockito-core:3.12.4")
     implementation("mysql:mysql-connector-java:8.0.21")
     implementation ("org.mindrot:jbcrypt:0.4")
+    implementation ("com.h2database:h2:1.4.200")
+
 
 }
 
@@ -24,6 +26,8 @@ tasks.test {
 }
 
 tasks.jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     manifest {
         attributes["Main-Class"] = "com.pongame.graphics.PongGame"
     }

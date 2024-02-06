@@ -19,7 +19,7 @@ class BallTest {
     @BeforeEach
     void setUp() {
         lvl = DifficultyLevel.SLOW;
-        gm = new Game(lvl, true, null); // no player, play against computer
+        gm = new Game(lvl, true, null,null); // no player, play against computer
         b = new Ball(lvl, gm);
     }
 

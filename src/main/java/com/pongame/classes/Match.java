@@ -8,13 +8,15 @@ public class Match {
     private boolean isSinglePlayerMode;
     private int score;
     private int playerId;
+    private boolean win;
 
     // Constructors
 
-    public Match(  boolean isSinglePlayerMode, int score, int playerId) {
+    public Match(  boolean isSinglePlayerMode, int score, int playerId,boolean win) {
 
         this.isSinglePlayerMode = isSinglePlayerMode;
         this.score = score;
+        this.win=win;
         this.playerId = playerId;
     }
 
@@ -58,5 +60,13 @@ public class Match {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public boolean isWin() {
+        return win;
+    }
+
+    public void setWin(boolean win) {
+        this.win = win;
     }
 }

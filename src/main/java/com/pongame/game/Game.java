@@ -115,13 +115,26 @@ public class Game implements Serializable {
     }
     private void saveGameToDatabase() {
         try {
-            Match match = new Match(this.isSinglePlayerMode, this.scoreManager.getPlayer1Score(), this.player.getId());
+            int currentPlayerId = this.player.getId();
+            int currentPlayerScore = this.scoreManager.getPlayer1Score();
+            boolean isWinning = checkIfPlayerIsWinning(currentPlayerScore);
+            Match match = new Match(this.isSinglePlayerMode, currentPlayerScore, currentPlayerId,isWinning );
             gameDAO.saveGame(match);
-            System.out.println("Game Saved player Id  " + match.getPlayerId());
+
+            System.out.println("Game Saved, Player ID: " + match.getPlayerId() + ", Winning: " + isWinning);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    private boolean checkIfPlayerIsWinning(int currentPlayerScore) {
+
+        int player2Score = this.scoreManager.getPlayer2Score();
+        if(currentPlayerScore>player2Score){
+            return true;
+        }else return false;
+    }
+
 
 
 
