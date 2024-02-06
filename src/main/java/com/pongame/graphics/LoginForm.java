@@ -1,67 +1,69 @@
 package com.pongame.graphics;
 
 import com.pongame.classes.Player;
-import com.pongame.dao.PlayerDAO;
-import com.pongame.database.DbConnection;
+
+import com.pongame.interfaces.IPlayerDAO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginForm extends JFrame {
-    private JTextField nameField;
-    private JPasswordField passwordField;
-    public PlayerDAO playerDAO;
 
-    public LoginForm() {
-        setTitle("Login Form");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 150);
+    public class LoginForm extends JFrame {
+        private JTextField nameField;
+        private JPasswordField passwordField;
+        private IPlayerDAO playerDAO;
 
-        playerDAO = new PlayerDAO(DbConnection.getInstance());
+        public LoginForm(IPlayerDAO playerDAO) {
+            this.playerDAO = playerDAO;
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2));
+            setTitle("Login Form");
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setSize(400, 150);
 
-        JLabel nameLabel = new JLabel("Name:");
-        nameField = new JTextField();
+            JPanel panel = new JPanel();
+            panel.setLayout(new GridLayout(3, 2));
 
-        JLabel passwordLabel = new JLabel("Password:");
-        passwordField = new JPasswordField();
+            JLabel nameLabel = new JLabel("Name:");
+            nameField = new JTextField();
 
-        JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String enteredName = nameField.getText();
-                char[] enteredPasswordChars = passwordField.getPassword();
-                String enteredPassword = new String(enteredPasswordChars);
+            JLabel passwordLabel = new JLabel("Password:");
+            passwordField = new JPasswordField();
 
-                Player user = playerDAO.authenticatePlayer(enteredName, enteredPassword);
-                if (user != null) {
-                    JOptionPane.showMessageDialog(LoginForm.this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    openHomePage(user);
+            JButton loginButton = new JButton("Login");
+            loginButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String enteredName = nameField.getText();
+                    char[] enteredPasswordChars = passwordField.getPassword();
+                    String enteredPassword = new String(enteredPasswordChars);
+
+                    Player user = playerDAO.authenticatePlayer(enteredName, enteredPassword);
+                    if (user != null) {
+                        JOptionPane.showMessageDialog(LoginForm.this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        openHomePage(user);
+                        dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(LoginForm.this, "Login failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    nameField.setText("");
+                    passwordField.setText("");
                     dispose();
-                } else {
-                    JOptionPane.showMessageDialog(LoginForm.this, "Login failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+            });
 
-                nameField.setText("");
-                passwordField.setText("");
-                dispose();
-            }
-        });
+            panel.add(nameLabel);
+            panel.add(nameField);
+            panel.add(passwordLabel);
+            panel.add(passwordField);
+            panel.add(new JLabel());
+            panel.add(loginButton);
 
-        panel.add(nameLabel);
-        panel.add(nameField);
-        panel.add(passwordLabel);
-        panel.add(passwordField);
-        panel.add(new JLabel());
-        panel.add(loginButton);
+            add(panel);
+            setLocationRelativeTo(null);
 
-        add(panel);
-        setLocationRelativeTo(null);
     }
 
     private void openHomePage(Player user) {

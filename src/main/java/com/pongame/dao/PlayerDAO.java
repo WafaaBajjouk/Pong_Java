@@ -7,10 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.pongame.interfaces.IPlayerDAO;
 import org.mindrot.jbcrypt.BCrypt;
 
 
-public class PlayerDAO {
+public class PlayerDAO implements IPlayerDAO {
     private Connection connection;
 
     public PlayerDAO(Connection connection) {

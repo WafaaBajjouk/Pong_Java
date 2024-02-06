@@ -1,11 +1,13 @@
 package com.pongame.dao;
 
 import com.pongame.classes.Match;
+import com.pongame.interfaces.IGameDAO;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameDAO {
+public class GameDAO  implements IGameDAO {
     private Connection connection;
 
     public GameDAO(Connection connection) {

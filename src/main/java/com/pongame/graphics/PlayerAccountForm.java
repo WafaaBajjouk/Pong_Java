@@ -3,6 +3,7 @@ package com.pongame.graphics;
 import com.pongame.classes.Player;
 import com.pongame.dao.PlayerDAO;
 import com.pongame.database.DbConnection;
+import com.pongame.interfaces.IPlayerDAO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,7 @@ public class PlayerAccountForm extends JFrame {
     public JTextField birthdayField;
     public JPasswordField passwordField;
 
-    public    PlayerDAO playerDAO;
+    private IPlayerDAO playerDAO;
     public JButton registerButton;
 
     public PlayerAccountForm() {

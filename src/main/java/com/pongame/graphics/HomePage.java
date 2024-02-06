@@ -2,12 +2,16 @@ package com.pongame.graphics;
 
 import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
+import com.pongame.dao.GameDAO;
+import com.pongame.database.DbConnection;
 import com.pongame.game.Game;
 import com.pongame.game.PlayWithAI;
-
+import com.pongame.interfaces.IGameDAO;
+import com.pongame.interfaces.IPlayerDAO;
+import com.pongame.dao.PlayerDAO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+
 
 public class HomePage extends JFrame {
     public JComboBox<DifficultyLevel> difficultyComboBox;
@@ -21,9 +25,15 @@ public class HomePage extends JFrame {
     private static final int ICON_WIDTH = 30;
     private static final int ICON_HEIGHT = 30;
     public Game gameInstance ;
+    private IPlayerDAO playerDAO;
+    private IGameDAO gameDAO;
+
 
 
     public HomePage(Player player) {
+        this.playerDAO = new PlayerDAO(DbConnection.getInstance());
+        this.gameDAO = new GameDAO(DbConnection.getInstance());
+
         // Background image
         ImageIcon backgroundImage = new ImageIcon("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/back.png");
         JLabel backgroundLabel = new JLabel(backgroundImage);
@@ -95,7 +105,8 @@ public class HomePage extends JFrame {
             accountForm.setVisible(true);
         });
         loginButton.addActionListener(e -> {
-            LoginForm loginForm = new LoginForm();
+
+            LoginForm loginForm = new LoginForm(playerDAO);
             loginForm.setVisible(true);
         });
         profileButton.addActionListener(e -> {
@@ -119,9 +130,9 @@ public class HomePage extends JFrame {
         DifficultyLevel selectedDifficulty = (DifficultyLevel) difficultyComboBox.getSelectedItem();
 
         if (isSinglePlayer) {
-            gameInstance = new PlayWithAI(selectedDifficulty, player);
+            gameInstance = new PlayWithAI(selectedDifficulty, player,gameDAO);
         } else {
-            gameInstance = new Game(selectedDifficulty, isSinglePlayer, player);
+            gameInstance = new Game(selectedDifficulty, isSinglePlayer, player,gameDAO);
         }
 
         JFrame gameFrame = new JFrame("Pong Game");

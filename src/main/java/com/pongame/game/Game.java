@@ -7,6 +7,7 @@ import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
 import com.pongame.dao.GameDAO;
 import com.pongame.database.DbConnection;
+import com.pongame.interfaces.IGameDAO;
 import com.pongame.utils.Constants;
 
 import java.io.Serializable;
@@ -24,21 +25,23 @@ public class Game implements Serializable {
     public boolean isSinglePlayerMode;
     private boolean gameActive = true;
     private final ScoreManager scoreManager;
-
     public boolean gamePaused = false;
     public boolean pausedOnce = false;
-
     private final int[] savedScores = new int[2];
     protected Paddle paddle1;
     protected Paddle paddle2;
+    private final IGameDAO gameDAO;
+
 
     // NOTEE:Constructor with dependency injection for the chosen difficulty level
-    public Game(DifficultyLevel difficultyLevel, boolean isSinglePlayerMode, Player player) {
+    public Game(DifficultyLevel difficultyLevel, boolean isSinglePlayerMode, Player player,IGameDAO gameDAO) {
         this.player = player;
         this.isSinglePlayerMode = isSinglePlayerMode;
         this.difficultyLevel = difficultyLevel;
         this.scoreManager = ScoreManager.getInstance();
         initializeGameComponents(difficultyLevel, isSinglePlayerMode);
+        this.gameDAO = gameDAO;
+
     }
 
     // Initialize game components  Ball and Paddles
@@ -111,16 +114,13 @@ public class Game implements Serializable {
         return  this.gamePaused;
     }
     private void saveGameToDatabase() {
-        Connection connection = DbConnection.getInstance();
         try {
             Match match = new Match(this.isSinglePlayerMode, this.scoreManager.getPlayer1Score(), this.player.getId());
-            GameDAO gameDAO = new GameDAO(connection);
-            System.out.println("Game Saved player Id  "+match.getPlayerId());
             gameDAO.saveGame(match);
+            System.out.println("Game Saved player Id  " + match.getPlayerId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
 
