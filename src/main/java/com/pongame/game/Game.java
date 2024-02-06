@@ -7,14 +7,11 @@ import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
 import com.pongame.dao.GameDAO;
 import com.pongame.database.DbConnection;
-import com.pongame.patterns.Observer;
 import com.pongame.utils.Constants;
 
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,7 +23,6 @@ public class Game implements Serializable {
     CollisionHandler collisionHandler;
     public boolean isSinglePlayerMode;
     private boolean gameActive = true;
-    private final List<Observer> observers = new ArrayList<>();
     private final ScoreManager scoreManager;
 
     public boolean gamePaused = false;
@@ -49,16 +45,10 @@ public class Game implements Serializable {
     public void initializeGameComponents(DifficultyLevel difficultyLevel, boolean isSinglePlayerMode) {
         this.ball = new Ball(difficultyLevel,this);
         this.isSinglePlayerMode=isSinglePlayerMode;
-
-
-
         this.paddle1 = new Paddle(0, Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, difficultyLevel,this);
         this.paddle2 = new Paddle(Constants.WINDOW_WIDTH - Paddle.WIDTH,
                 Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, difficultyLevel,this);
-
-
         collisionHandler = new CollisionHandler(this,paddle1,this.paddle2,this.ball);
-
 //       here I do the timer for calculating the time neeeded for increasing the ball speed
         if (this.speedIncreaseTimer != null) {
             this.speedIncreaseTimer.cancel();
@@ -72,39 +62,16 @@ public class Game implements Serializable {
             }
         }, 120000); // 120000 milliseconds = 2 minutes
 
-        System.out.println("BALL SPEE  X:"+this.getBall().getxSpeed()+"Y :"+this.getBall().getySpeed());
-    }
-//
-//    // Singleton instance creation with dependency injection
-//    public static synchronized Game getInstance(DifficultyLevel difficultyLevel, boolean isSinglePlayerMode) {
-//        System.out.println("SINLE MODE :"+isSinglePlayerMode);
-//
-//        if (instance == null) {
-//            instance = new Game(difficultyLevel, isSinglePlayerMode);
-//        }
-//        return instance;
-//    }
-
-    public void addObserver(Observer observer) {
-        this.observers.add(observer);
-    }
-    public void removeObserver(Observer observer) {
-        this.observers.remove(observer);
-    }
-    public void registerObserver(Observer observer) {
-        this.addObserver(observer);
+        System.out.println("BALL SPEED  X:"+this.getBall().getxSpeed()+"Y :"+this.getBall().getySpeed());
     }
 
-    public void notifyObserversWithGameState() {
-        for (Observer observer : this.observers) {
-            observer.updateGameInfo(this.getBall(), this.getPaddle1(), this.getPaddle2());
-        }
+    protected void initializeGameComponents(DifficultyLevel difficultyLevel) {
     }
-        public void updateGame() {
+
+    public void updateGame() {
             if (!gamePaused) {
                 this.ball.move();
                 this.collisionHandler.handleCollisions();
-                this.notifyObserversWithGameState();
             }
         }
 
@@ -112,11 +79,7 @@ public class Game implements Serializable {
     private void saveGameState() {
         savedScores[0] = this.scoreManager.getPlayer1Score();
         savedScores[1] = this.scoreManager.getPlayer2Score();
-        int savedPaddleSpeed = this.difficultyLevel.getPaddleSpeed();
-        int savedBallX = this.ball.getX();
-        int savedBallY = this.ball.getY();
-        int savedPaddle1Y = this.paddle1.getY();
-        int savedPaddle2Y = this.paddle2.getY();
+
     }
 
 
@@ -164,13 +127,8 @@ public class Game implements Serializable {
 
     // Initialize the game state
     public void initializeGame() {
-
         initializeGameComponents(difficultyLevel,this.isSinglePlayerMode);
-
         this.scoreManager.resetScores();
-
-        this.notifyObserversWithGameState();
-
         System.out.println("After initialization ");
         System.out.println("SINGLE MODE :"+this.isSinglePlayerMode);
 

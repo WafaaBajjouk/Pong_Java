@@ -10,17 +10,20 @@ import java.util.Random;
 // gameplay where the player competes against a computer-controlled paddle
 public class PlayWithAI extends Game {
     private static Paddle aiPaddle ;
-    private int consecutiveMisses = 0;
     private final Random random = new Random();
 
+
     public PlayWithAI(DifficultyLevel difficultyLevel, Player player) {
-        super(difficultyLevel, true, player);
-        // The player controls paddle1, and the computer controls paddle2
+        super(difficultyLevel, true,player);
+    }
+
+    @Override
+    protected void initializeGameComponents(DifficultyLevel difficultyLevel) {
+        super.initializeGameComponents(difficultyLevel);
         this.aiPaddle = this.getPaddle2();
         if(this.isSinglePlayerMode) {
+        }    }
 
-        }
-    }
     @Override
     public void updateGame() {
         super.updateGame();

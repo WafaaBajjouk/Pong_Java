@@ -35,9 +35,15 @@ public class Ball  implements Serializable {
         x += xSpeed;
         y += ySpeed;
     }
-    public void reverseXDirection() {
+    public boolean reverseXDirection() {
+        try{
         xSpeed = -xSpeed;
-    }
+        return true;
+
+        }catch(Exception e ){
+            return false;
+          }
+        }
     // Reverses the direction of the ball along the y-axis.
     public void reverseYDirection() {
         ySpeed = -ySpeed;
