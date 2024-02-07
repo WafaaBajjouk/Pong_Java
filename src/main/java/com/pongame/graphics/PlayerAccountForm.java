@@ -16,7 +16,7 @@ public class PlayerAccountForm extends JFrame {
     public JTextField birthdayField;
     public JPasswordField passwordField;
 
-    private IPlayerDAO playerDAO;
+    public IPlayerDAO playerDAO;
     public JButton registerButton;
 
     public PlayerAccountForm() {

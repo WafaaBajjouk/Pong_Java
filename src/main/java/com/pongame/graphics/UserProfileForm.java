@@ -20,9 +20,9 @@ import javax.imageio.ImageIO;
 
 public class UserProfileForm extends JFrame {
     private Player user;
-    private JTextField nameTextField;
-    private JTextField birthdayTextField;
-    private JPasswordField passwordField;
+    public JTextField nameTextField;
+    public JTextField birthdayTextField;
+    public JPasswordField passwordField;
 
     public UserProfileForm(Player user) {
         this.user = user;

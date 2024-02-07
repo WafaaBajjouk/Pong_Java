@@ -70,17 +70,17 @@ class BallTest {
         // Test collision with top wall
         b.setY(0); b.setX(10);
         b.handleWallCollisions();
-        assertTrue(b.getySpeed() > 0);  // Y-direction should be reversed from negative value to true value
+        assertTrue(b.getySpeed() > 0);
 
         // Test collision with bottom wall
         b.setY(Constants.WINDOW_HEIGHT - b.getDiameter());
         b.handleWallCollisions();
-        assertTrue(b.getySpeed() > 0); // Y-direction should be reversed
+        assertTrue(b.getySpeed() > 0);
 //
         // Test collision with left edge
         b.setX(0);
         b.handleWallCollisions();
-        assertEquals(0, b.getX()); // Ball should be reset
+        assertEquals(0, b.getX());
 
     }
 

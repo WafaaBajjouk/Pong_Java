@@ -64,10 +64,17 @@ public class GameDAO  implements IGameDAO {
                     games.add(game);
                 }
             }
-        }
 
+        }
+        // Print the results
+        for (Match game : games) {
+            System.out.println("Game ID: " + game.getId() + ", Date: " + game.getDate() + ", Score: " + game.getScore() + ", Single Player: " + game.isSinglePlayerMode() + ", Win: " + game.isWin());
+        }
         return games;
     }
+
+
+
 }
 
 

@@ -2,7 +2,6 @@ package com.pongame.graphics;
 
 import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
-import com.pongame.dao.GameDAO;
 import com.pongame.database.DbConnection;
 import com.pongame.game.Game;
 import com.pongame.game.PlayWithAI;
@@ -32,10 +31,9 @@ public class HomePage extends JFrame {
 
     public HomePage(Player player) {
         this.playerDAO = new PlayerDAO(DbConnection.getInstance());
-        this.gameDAO = new GameDAO(DbConnection.getInstance());
 
         // Background image
-        ImageIcon backgroundImage = new ImageIcon("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/back.png");
+        ImageIcon backgroundImage = new ImageIcon("src/main/java/com/pongame/pictures/back.png");
         JLabel backgroundLabel = new JLabel(backgroundImage);
         backgroundLabel.setLayout(new OverlayLayout(backgroundLabel));
         // Set window properties
@@ -49,11 +47,11 @@ public class HomePage extends JFrame {
         // Button size
         Dimension buttonSize = new Dimension(150, 30);
         // Icons for buttons
-        ImageIcon singlePlayerIcon = resizeIcon(new ImageIcon("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/single_player_icon.png"), ICON_WIDTH, ICON_HEIGHT);
-        ImageIcon multiPlayerIcon = resizeIcon(new ImageIcon("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/multi_player_icon.png"), ICON_WIDTH, ICON_HEIGHT);
-        ImageIcon createAccountIcon = resizeIcon(new ImageIcon("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/create_account_icon.png"), ICON_WIDTH, ICON_HEIGHT);
-        ImageIcon loginIcon = resizeIcon(new ImageIcon("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/login_icon.png"), ICON_WIDTH, ICON_HEIGHT);
-        ImageIcon profileIcon = resizeIcon(new ImageIcon("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/profile_icon.png"), ICON_WIDTH, ICON_HEIGHT);
+        ImageIcon singlePlayerIcon = resizeIcon(new ImageIcon("src/main/java/com/pongame/pictures/single_player_icon.png"), ICON_WIDTH, ICON_HEIGHT);
+        ImageIcon multiPlayerIcon = resizeIcon(new ImageIcon("src/main/java/com/pongame/pictures/multi_player_icon.png"), ICON_WIDTH, ICON_HEIGHT);
+        ImageIcon createAccountIcon = resizeIcon(new ImageIcon("src/main/java/com/pongame/pictures/create_account_icon.png"), ICON_WIDTH, ICON_HEIGHT);
+        ImageIcon loginIcon = resizeIcon(new ImageIcon("src/main/java/com/pongame/pictures/login_icon.png"), ICON_WIDTH, ICON_HEIGHT);
+        ImageIcon profileIcon = resizeIcon(new ImageIcon("src/main/java/com/pongame/pictures/profile_icon.png"), ICON_WIDTH, ICON_HEIGHT);
         // Buttons with icons
         startSinglePlayerButton = new JButton("Play with Computer", singlePlayerIcon);
         startSinglePlayerButton.setPreferredSize(buttonSize);

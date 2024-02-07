@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements KeyListener {
         timer.start();
 
         try {
-            backgroundImage = ImageIO.read(new File("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/black.png"));
+            backgroundImage = ImageIO.read(new File("src/main/java/com/pongame/pictures/back.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

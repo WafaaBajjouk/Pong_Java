@@ -1,56 +1,35 @@
 package com.pongame;
 
-import com.pongame.classes.Ball;
-import com.pongame.classes.Paddle;
-import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
 import com.pongame.game.PlayWithAI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class PlayWithAITest {
-
-    private PlayWithAI playWithAI;
+class PlayWithAITest {
+    private PlayWithAI ai;
 
     @BeforeEach
-    public void setUp() {
-        Ball ball = mock(Ball.class);
-        Paddle paddle2 = mock(Paddle.class);
-        playWithAI = new PlayWithAI(DifficultyLevel.SLOW, null,null);
-        playWithAI.setBall(ball);
-        playWithAI.setPaddle2(paddle2);
+    void setUp() {
+        ai = new PlayWithAI(DifficultyLevel.MEDIUM, null, null);
     }
 
     @Test
-    public void testAutoMoveAI_BallAbovePaddle() {
-        when(playWithAI.getBall().getY()).thenReturn(100);
-        when(playWithAI.getPaddle2().getY()).thenReturn(150);
-        playWithAI.autoMoveAI();
-        assertEquals(150, playWithAI.getPaddle2().getY());
+    void testInitialization() {
+        assertNotNull(ai.getBall(), "Ball is not  initialized");
+        assertNotNull(ai.getPaddle1(), "Paddle 1 is not initialized");
+        assertNotNull(ai.getPaddle2(), "AI Paddleis not initialized");
+        assertTrue(ai.isSinglePlayerMode, " single player mode");
     }
 
     @Test
-    public void testAutoMoveAI_BallBelowPaddle() {
-        when(playWithAI.getBall().getY()).thenReturn(200);
-        when(playWithAI.getPaddle2().getY()).thenReturn(150);
-        playWithAI.autoMoveAI();
-        assertEquals(150, playWithAI.getPaddle2().getY());
+    void testAutoMoveAI() {
+        int initialY = ai.getPaddle2().getY();
+        ai.getBall().setY(ai.getPaddle2().getY() - 20);
+        ai.autoMoveAI();
+        assertTrue(ai.getPaddle2().getY() < initialY, "AI paddle should move up");
+
     }
-
-    @Test
-    public void testAutoMoveAI() {
-        Player player = new Player("user", "2000-05-12", "user");
-        PlayWithAI playWithAI = new PlayWithAI(DifficultyLevel.MEDIUM, player,null);
-        //  above the AI paddle
-        playWithAI.getBall().setY(playWithAI.getPaddle2().getY() - 10);
-        playWithAI.updateGame();
-        assertTrue(playWithAI.getPaddle2().getY() < Paddle.inity);
-    }
-
-
 }

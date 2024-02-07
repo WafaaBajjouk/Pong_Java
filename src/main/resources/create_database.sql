@@ -14,5 +14,5 @@ CREATE TABLE IF NOT EXISTS Game (
                                     player_id INT,
                                     FOREIGN KEY (player_id) REFERENCES Player(Id)
 );
-INSERT INTO Player (name, birthday, password)
-VALUES ('user', '2000-01-15', 'user');
+
+INSERT INTO Player (name, birthday, password) VALUES ('user', '2000-01-15', 'user');

@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
     public class LoginForm extends JFrame {
         private JTextField nameField;
         private JPasswordField passwordField;
-        private IPlayerDAO playerDAO;
+        public IPlayerDAO playerDAO;
 
         public LoginForm(IPlayerDAO playerDAO) {
             this.playerDAO = playerDAO;

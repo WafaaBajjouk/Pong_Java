@@ -27,7 +27,6 @@ public class PaddleTest {
 
     @Test
     public void testMoveUp() {
-        // Move the paddle up
         paddle.setY(10);
         paddle.moveUp(10);
         assertEquals(0, paddle.getY());

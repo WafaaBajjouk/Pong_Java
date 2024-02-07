@@ -51,6 +51,7 @@ public class InputHandler implements KeyListener, Serializable {
             if (e.getKeyCode() == KeyEvent.VK_Q) {
                 System.out.println("Q PRESSED");
                 game.endGame();
+                game.saveGameToDatabase();
             }
 
         } else if (gamePanel instanceof GamePanel) {

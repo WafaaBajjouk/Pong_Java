@@ -5,13 +5,10 @@ import com.pongame.classes.Match;
 import com.pongame.classes.Paddle;
 import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
-import com.pongame.dao.GameDAO;
-import com.pongame.database.DbConnection;
 import com.pongame.interfaces.IGameDAO;
 import com.pongame.utils.Constants;
 
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,7 +20,7 @@ public class Game implements Serializable {
     private Timer speedIncreaseTimer;
     CollisionHandler collisionHandler;
     public boolean isSinglePlayerMode;
-    private boolean gameActive = true;
+    public boolean gameActive = true;
     private final ScoreManager scoreManager;
     public boolean gamePaused = false;
     public boolean pausedOnce = false;
@@ -72,11 +69,11 @@ public class Game implements Serializable {
     }
 
     public void updateGame() {
-            if (!gamePaused) {
-                this.ball.move();
-                this.collisionHandler.handleCollisions();
-            }
+        if (!gamePaused) {
+            this.ball.move();
+            this.collisionHandler.handleCollisions();
         }
+    }
 
 
     private void saveGameState() {
@@ -97,7 +94,7 @@ public class Game implements Serializable {
         }
 
         if (player != null) {
-            System.out.println("PlayerID   "+this.player.getId());
+            System.out.println("PlayerID to game save  "+this.player.getId());
             saveGameToDatabase();
         }
     }
@@ -110,10 +107,11 @@ public class Game implements Serializable {
             pausedOnce = true;
             saveGameState();
 
+
         }
         return  this.gamePaused;
     }
-    private void saveGameToDatabase() {
+    public void saveGameToDatabase() {
         try {
             int currentPlayerId = this.player.getId();
             int currentPlayerScore = this.scoreManager.getPlayer1Score();
