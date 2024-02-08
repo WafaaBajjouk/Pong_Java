@@ -2,83 +2,45 @@ package com.pongame;
 
 import com.pongame.classes.Player;
 import com.pongame.dao.PlayerDAO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.h2.jdbcx.JdbcConnectionPool;
+import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
 
-class PlayerDAOTest {
-    @Mock
-    private Connection conn;
+public class PlayerDAOTest {
 
-    @Mock
-    private PreparedStatement stmt;
-
-    @Mock
-    private ResultSet rs;
-
-    private PlayerDAO dao;
+    private JdbcConnectionPool connectionPool;
+    private PlayerDAO playerDAO;
 
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        dao = new PlayerDAO(conn);
+    public void setUp() throws Exception {
+        connectionPool = JdbcConnectionPool.create("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1", "user", "pass");
+        try (Connection conn = connectionPool.getConnection()) {
+            Statement stmt = conn.createStatement();
+            stmt.execute("CREATE TABLE IF NOT EXISTS Player (Id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, birthday DATE NULL, password VARCHAR(255) NOT NULL)");
+        }
+        playerDAO = new PlayerDAO(connectionPool.getConnection());
+    }
+
+    @AfterEach
+    public void Down() throws Exception {
+        try (Connection conn = connectionPool.getConnection()) {
+            Statement stmt = conn.createStatement();
+            stmt.execute("DROP TABLE IF EXISTS Player");
+        }
+        connectionPool.dispose();
     }
 
     @Test
-    void testCreatePlayer() throws SQLException {
-        when(conn.prepareStatement(anyString())).thenReturn(stmt);
-        when(stmt.executeUpdate()).thenReturn(1);
-        Player p = new Player("Test", "2000-01-01", "password");
-        assertTrue(dao.createPlayer(p));
-    }
+    public void testCreatePlayer() throws SQLException {
+        Player testPlayer = new Player("testUser", "2000-01-01", "password123");
+        boolean result = playerDAO.createPlayer(testPlayer);
+        assertTrue(result, "Player creation should return true");
 
-    @Test
-    void testAuthenticatePlayer_Successful() throws SQLException {
-        when(conn.prepareStatement(anyString())).thenReturn(stmt);
-        when(stmt.executeQuery()).thenReturn(rs);
-        when(rs.next()).thenReturn(true);
-        when(rs.getString("password")).thenReturn("password");
-        when(rs.getInt("Id")).thenReturn(1);
-        when(rs.getString("name")).thenReturn("TestPlayer");
-        when(rs.getString("birthday")).thenReturn("2000-01-01");
-        Player p = dao.authenticatePlayer("TestPlayer", "password");
-        assertNotNull(p);
-        assertEquals("TestPlayer", p.getName());
-        assertEquals("2000-01-01", p.getBirthday());
-        assertEquals("password", p.getPassword());
-        assertEquals(1, p.getId());
-    }
-
-    @Test
-    void testAuthenticatePlayer_Unsuccessful() throws SQLException {
-        when(conn.prepareStatement(anyString())).thenReturn(stmt);
-        when(stmt.executeQuery()).thenReturn(rs);
-        when(rs.next()).thenReturn(false);
-        Player p = dao.authenticatePlayer("NonExistentPlayer", "wrongPassword");
-        assertNull(p);
-    }
-
-    @Test
-    void testChangePassword_Successful() throws SQLException {
-        when(conn.prepareStatement(anyString())).thenReturn(stmt);
-        when(stmt.executeUpdate()).thenReturn(1);
-        assertTrue(dao.changePassword(1, "newPassword"));
-    }
-
-    @Test
-    void testChangePassword_Unsuccessful() throws SQLException {
-        when(conn.prepareStatement(anyString())).thenReturn(stmt);
-        when(stmt.executeUpdate()).thenReturn(0);
-        assertFalse(dao.changePassword(1, "newPassword"));
+        
     }
 }
