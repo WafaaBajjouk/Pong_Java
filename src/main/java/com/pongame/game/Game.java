@@ -67,7 +67,6 @@ public class Game implements Serializable {
             }
         }, 120000); // 120000 milliseconds = 2 minutes
 
-        System.out.println("BALL SPEED  X:"+this.getBall().getxSpeed()+"Y :"+this.getBall().getySpeed());
     }
 
     protected void initializeGameComponents(DifficultyLevel difficultyLevel) {
@@ -114,6 +113,7 @@ public class Game implements Serializable {
     }
 
     public void saveGameToDatabase(IGameDAO gameDAO) {
+        if(this.player != null){
         gameDAO=new GameDAO(connection);
         try {
             int currentPlayerId = this.player.getId();
@@ -125,6 +125,7 @@ public class Game implements Serializable {
             System.out.println("Game Saved, Player ID: " + match.getPlayerId() + ", Winning: " + isWinning);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
         }
     }
 
@@ -138,13 +139,7 @@ public class Game implements Serializable {
     public void initializeGame() {
         initializeGameComponents(difficultyLevel,this.isSinglePlayerMode);
         this.scoreManager.resetScores();
-        System.out.println("After initialization ");
-        System.out.println("SINGLE MODE :"+this.isSinglePlayerMode);
-
-        System.out.println("Ball position reset: X - " + ball.getX() + ", Y - " + ball.getY());
-        System.out.println("Game state flags reset: gameActive - " + gameActive + ", gamePaused - " + gamePaused + ", pausedOnce - " + pausedOnce);
-        System.out.println("Scores reset: Player 1 - " + scoreManager.getPlayer1Score() + ", Player 2 - " + scoreManager.getPlayer2Score());
-    }
+   }
 
 
 

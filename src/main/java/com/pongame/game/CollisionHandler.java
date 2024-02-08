@@ -28,13 +28,7 @@ public class CollisionHandler  implements Serializable {
             this.paddle1.handlePaddleCollisions();
             this.paddle2.handlePaddleCollisions();
             this.ball.handleWallCollisions();
-            checkForWinningCondition();
         }
     }
 
-    private void checkForWinningCondition() {
-        if (ScoreManager.getInstance().getPlayer1Score() >= WINNING_SCORE || ScoreManager.getInstance().getPlayer2Score() >= WINNING_SCORE) {
-            game.endGame();
-        }
-    }
 }
