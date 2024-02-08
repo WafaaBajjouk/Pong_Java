@@ -3,7 +3,7 @@ package com.pongame.game;
 import java.io.Serializable;
 
 public class ScoreManager  implements Serializable {
-    
+
     private static ScoreManager instance;
 
     private int player1Score;
