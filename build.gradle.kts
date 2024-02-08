@@ -17,6 +17,8 @@ dependencies {
     implementation("mysql:mysql-connector-java:8.0.21")
     implementation ("org.mindrot:jbcrypt:0.4")
     implementation ("com.h2database:h2:1.4.200")
+    implementation ("org.springframework.security:spring-security-crypto:5.4.5")
+
 
 
 }

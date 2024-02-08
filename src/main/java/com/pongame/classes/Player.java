@@ -1,5 +1,6 @@
 package com.pongame.classes;
 
+
 public class Player {
     private int id;
     private String name;
@@ -13,9 +14,9 @@ public class Player {
     }
 
     public Player() {
-
     }
 
+    //  getters and setters
     public int getId() {
         return id;
     }
@@ -40,13 +41,14 @@ public class Player {
         this.birthday = birthday;
     }
 
+
     public String getPassword() {
         return password;
     }
 
+
     public void setPassword(String password) {
         this.password = password;
     }
-
 
 }

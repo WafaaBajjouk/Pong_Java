@@ -67,13 +67,10 @@ public class Ball  implements Serializable {
         return r;
     }
 
-
     //    NOTE :
-//    separates the speed along the x-axis (xSpeed) and y-axis (ySpeed),
-//    allowing more flexibility in controlling the ball's movement.
+    //    separates the speed along the x-axis (xSpeed) and y-axis (ySpeed),
+    //    allowing more flexibility in controlling the ball's movement.
     // Reverses the direction of the ball along the x-axis.
-
-
 
     public void increaseSpeed() {
         System.out.println("Time to increase ball speed");
@@ -87,6 +84,28 @@ public class Ball  implements Serializable {
         System.out.println("New X speed: " + this.getxSpeed());
         System.out.println("New Y speed: " + this.getySpeed());
     }
+
+    //    handle collision
+    public void handleWallCollisions() {
+
+        if (this.getY() <= 0 || this.getY() + Constants.BALL_DIAMETERE >= Constants.WINDOW_HEIGHT) {
+            this.reverseYDirection();
+            System.out.println("Wall collision detected. Ball's Y-direction reversed.");
+        }
+
+        if (this.getX() + Constants.BALL_DIAMETERE <= 0 || this.getX() >= Constants.WINDOW_WIDTH) {
+            System.out.println("Edge collision detected. Updating scores and resetting the ball.");
+
+            if (this.getX() + Constants.BALL_DIAMETERE <= 0) {
+                this.game.getScoreManager().player2Scores();
+            } else {
+                this.game.getScoreManager().player1Scores();
+            }
+
+            this.reset();
+        }
+    }
+
     // Getters & setters...
 
     public int getX() {
@@ -131,28 +150,7 @@ public class Ball  implements Serializable {
     }
 
 
-//    handle collision
 
-
-    public void handleWallCollisions() {
-
-        if (this.getY() <= 0 || this.getY() + Constants.BALL_DIAMETERE >= Constants.WINDOW_HEIGHT) {
-            this.reverseYDirection();
-            System.out.println("Wall collision detected. Ball's Y-direction reversed.");
-        }
-
-        if (this.getX() + Constants.BALL_DIAMETERE <= 0 || this.getX() >= Constants.WINDOW_WIDTH) {
-            System.out.println("Edge collision detected. Updating scores and resetting the ball.");
-
-            if (this.getX() + Constants.BALL_DIAMETERE <= 0) {
-                this.game.getScoreManager().player2Scores();
-            } else {
-                this.game.getScoreManager().player1Scores();
-            }
-
-            this.reset();
-        }
-    }
 
 
 

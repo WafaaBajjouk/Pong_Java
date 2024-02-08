@@ -14,6 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Game implements Serializable {
+
     private final Player player; // The currently logged-in player
     protected Ball ball;
     DifficultyLevel difficultyLevel;
@@ -49,7 +50,7 @@ public class Game implements Serializable {
         this.paddle2 = new Paddle(Constants.WINDOW_WIDTH - Paddle.WIDTH,
                 Constants.WINDOW_HEIGHT / 2 - Paddle.HEIGHT / 2, difficultyLevel,this);
         collisionHandler = new CollisionHandler(this,paddle1,this.paddle2,this.ball);
-//       here I do the timer for calculating the time neeeded for increasing the ball speed
+        //       here I do the timer for calculating the time neeeded for increasing the ball speed
         if (this.speedIncreaseTimer != null) {
             this.speedIncreaseTimer.cancel();
         }
@@ -75,14 +76,11 @@ public class Game implements Serializable {
         }
     }
 
-
     private void saveGameState() {
         savedScores[0] = this.scoreManager.getPlayer1Score();
         savedScores[1] = this.scoreManager.getPlayer2Score();
 
     }
-
-
 
     public void endGame() {
         this.gameActive = !this.gameActive;
@@ -98,6 +96,7 @@ public class Game implements Serializable {
             saveGameToDatabase();
         }
     }
+
     // Pause or continue the game
     public boolean pause_ContinueGame() {
         this.gamePaused = !this.gamePaused;
@@ -106,11 +105,10 @@ public class Game implements Serializable {
         if (!pausedOnce && gamePaused) {
             pausedOnce = true;
             saveGameState();
-
-
         }
         return  this.gamePaused;
     }
+
     public void saveGameToDatabase() {
         try {
             int currentPlayerId = this.player.getId();
@@ -132,9 +130,6 @@ public class Game implements Serializable {
             return true;
         }else return false;
     }
-
-
-
 
     // Initialize the game state
     public void initializeGame() {

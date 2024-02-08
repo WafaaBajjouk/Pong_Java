@@ -36,8 +36,7 @@ public class Paddle  implements Serializable {
         }
     }
 
-    public void moveDown(int speed) {
-//        y coordinate increases as you move down.bc , TOP left point is (0,0)
+    public void moveDown(int speed) {//        y coordinate increases as you move down.bc , TOP left point is (0,0)
         y += speed;
         if (y + HEIGHT > Constants.WINDOW_HEIGHT) {
             y = Constants.WINDOW_HEIGHT - HEIGHT;
@@ -54,8 +53,6 @@ public class Paddle  implements Serializable {
         return new Rectangle(x, y, WIDTH, HEIGHT);
     }
 
-
-
     public void handlePaddleCollisions() {
         if (game.getBall().getBounds().intersects(this.getBounds())
                 || game.getBall().getBounds().intersects(this.getBounds())) {
@@ -64,9 +61,7 @@ public class Paddle  implements Serializable {
         }
     }
 
-
     // Getters and setters
-
     public int getX() {
         return x;
     }

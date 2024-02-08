@@ -10,17 +10,15 @@ public class Match {
     private int playerId;
     private boolean win;
 
-    // Constructors
-
-    public Match(  boolean isSinglePlayerMode, int score, int playerId,boolean win) {
-
+    public Match(boolean isSinglePlayerMode, int score, int playerId, boolean win) {
         this.isSinglePlayerMode = isSinglePlayerMode;
         this.score = score;
-        this.win=win;
         this.playerId = playerId;
+        this.win = win;
+        this.date = new Date();
     }
 
-    // Getters and setters
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -36,14 +34,13 @@ public class Match {
     public void setDate(Date date) {
         this.date = date;
     }
+
     public boolean isSinglePlayerMode() {
         return isSinglePlayerMode;
     }
 
-
-
-    public void setSinglePlayerMode(boolean singlePlayerMode) {
-        isSinglePlayerMode = singlePlayerMode;
+    public void setSinglePlayerMode(boolean isSinglePlayerMode) {
+        this.isSinglePlayerMode = isSinglePlayerMode;
     }
 
     public int getPlayerId() {
