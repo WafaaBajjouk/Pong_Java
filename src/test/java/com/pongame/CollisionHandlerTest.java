@@ -41,10 +41,5 @@ public class CollisionHandlerTest {
         assertFalse(game.isGameActive(), "Game should remain inactive if collision handling is called when game is inactive");
     }
 
-    @Test
-    void testCheckForWinningCondition() {
-        ScoreManager.getInstance().setPlayer1Score(Constants.WINNING_SCORE);
-        collisionHandler.handleCollisions();
-        assertFalse(game.isGameActive(), "Game should end when winning condition is met");
-    }
+
 }

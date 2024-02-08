@@ -25,13 +25,14 @@ class BallTest {
 
     @Test
     void testBallInitialization() {
-        int expX = Constants.WINDOW_WIDTH / 2 - Constants.BALL_DIAMETERE / 2;
-        int expY = Constants.WINDOW_HEIGHT / 2 - Constants.BALL_DIAMETERE / 2;
+        int expX = Constants.WINDOW_WIDTH / 2 - b.getDiameter() / 2;
+        int expY = Constants.WINDOW_HEIGHT / 2 - b.getDiameter() / 2;
         assertEquals(expX, b.getX());
         assertEquals(expY, b.getY());
         assertEquals(Constants.BALL_DIAMETERE, b.getDiameter());
         assertEquals(1.0, b.getxSpeed());
         assertEquals(1.0, b.getySpeed());
+
     }
 
     @Test

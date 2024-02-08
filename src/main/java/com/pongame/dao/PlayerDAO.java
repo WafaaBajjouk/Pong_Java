@@ -28,7 +28,6 @@ public class PlayerDAO implements IPlayerDAO {
             return false;
         }
     }
-
     public Player authenticatePlayer(String name, String password) {
         String sql = "SELECT * FROM Player WHERE name = ? AND password = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -40,7 +39,8 @@ public class PlayerDAO implements IPlayerDAO {
                 int id = resultSet.getInt("Id");
                 String playerName = resultSet.getString("name");
                 String playerBirthday = resultSet.getString("birthday");
-                Player player = new Player(playerName, playerBirthday, null);
+                String playerPassword = resultSet.getString("password");
+                Player player = new Player(playerName, playerBirthday, playerPassword);
                 player.setId(id);
                 return player;
             }
@@ -50,6 +50,7 @@ public class PlayerDAO implements IPlayerDAO {
 
         return null;
     }
+
 
     public boolean changePassword(int playerId, String newPassword) {
         String sql = "UPDATE Player SET password = ? WHERE Id = ?";
