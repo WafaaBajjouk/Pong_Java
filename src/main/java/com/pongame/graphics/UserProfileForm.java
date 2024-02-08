@@ -1,22 +1,13 @@
 package com.pongame.graphics;
 
-import com.pongame.classes.Match;
 import com.pongame.classes.Player;
-import com.pongame.dao.GameDAO;
 import com.pongame.dao.PlayerDAO;
 import com.pongame.database.DbConnection;
-import com.pongame.graphics.HomePage;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
-import javax.imageio.ImageIO;
 
 public class UserProfileForm extends JFrame {
     private Player user;
@@ -32,10 +23,9 @@ public class UserProfileForm extends JFrame {
     private void initUI() {
         setTitle("User Profile");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(400, 300);
         setLayout(new BorderLayout());
         add(createTopPanel(), BorderLayout.NORTH);
-        add(createCenterPanel(), BorderLayout.CENTER);
         add(createBottomPanel(), BorderLayout.SOUTH);
         setLocationRelativeTo(null);
     }
@@ -72,35 +62,6 @@ public class UserProfileForm extends JFrame {
         return topPanel;
     }
 
-    private JPanel createCenterPanel() {
-        JPanel centerPanel = new JPanel(new BorderLayout());
-        JTable gamesTable = new JTable();
-        centerPanel.add(new JScrollPane(gamesTable), BorderLayout.CENTER);
-
-        if (user != null) {
-            try {
-                Connection connection = DbConnection.getInstance();
-                GameDAO gameDAO = new GameDAO(connection);
-                List<Match> games = gameDAO.getGamesByPlayerId(user.getId());
-                DefaultTableModel model = new DefaultTableModel();
-                model.addColumn("Game ID");
-                model.addColumn("Date");
-                model.addColumn("Single Player");
-                model.addColumn("Score");
-
-                for (Match game : games) {
-                    model.addRow(new Object[]{game.getId(), game.getDate(), game.isSinglePlayerMode(), game.getScore()});
-                }
-
-                gamesTable.setModel(model);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        return centerPanel;
-    }
-
     private JPanel createBottomPanel() {
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         // Change Password Button
@@ -119,9 +80,6 @@ public class UserProfileForm extends JFrame {
         JButton logoutButton = new JButton("Logout");
         logoutButton.setFont(new Font("Arial", Font.BOLD, 16));
         logoutButton.setPreferredSize(new Dimension(100, 40));
-        ImageIcon logoutIcon = new ImageIcon("/Users/wafaabajjouk/Desktop/Pong_Java/src/main/java/com/pongame/pictures/logout.png");
-        Image iconImage = logoutIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-        logoutButton.setIcon(new ImageIcon(iconImage));
         logoutButton.addActionListener(e -> logout());
 
         return logoutButton;
@@ -145,6 +103,4 @@ public class UserProfileForm extends JFrame {
         HomePage homepage = new HomePage(null);
         homepage.setVisible(true);
     }
-
-
 }

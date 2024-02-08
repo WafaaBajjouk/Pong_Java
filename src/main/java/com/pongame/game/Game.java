@@ -5,6 +5,7 @@ import com.pongame.classes.Match;
 import com.pongame.classes.Paddle;
 import com.pongame.classes.Player;
 import com.pongame.config.DifficultyLevel;
+import com.pongame.dao.GameDAO;
 import com.pongame.interfaces.IGameDAO;
 import com.pongame.utils.Constants;
 
@@ -12,6 +13,8 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.pongame.database.DbConnection.connection;
 
 public class Game implements Serializable {
 
@@ -31,8 +34,9 @@ public class Game implements Serializable {
     private final IGameDAO gameDAO;
 
 
-    // NOTEE:Constructor with dependency injection for the chosen difficulty level
-    public Game(DifficultyLevel difficultyLevel, boolean isSinglePlayerMode, Player player,IGameDAO gameDAO) {
+
+    // Constructor with dependency injection for the chosen difficulty level
+    public Game(DifficultyLevel difficultyLevel, boolean isSinglePlayerMode, Player player, IGameDAO gameDAO) {
         this.player = player;
         this.isSinglePlayerMode = isSinglePlayerMode;
         this.difficultyLevel = difficultyLevel;
@@ -93,7 +97,7 @@ public class Game implements Serializable {
 
         if (player != null) {
             System.out.println("PlayerID to game save  "+this.player.getId());
-            saveGameToDatabase();
+            saveGameToDatabase(this.gameDAO);
         }
     }
 
@@ -109,7 +113,8 @@ public class Game implements Serializable {
         return  this.gamePaused;
     }
 
-    public void saveGameToDatabase() {
+    public void saveGameToDatabase(IGameDAO gameDAO) {
+        gameDAO=new GameDAO(connection);
         try {
             int currentPlayerId = this.player.getId();
             int currentPlayerScore = this.scoreManager.getPlayer1Score();
@@ -126,9 +131,7 @@ public class Game implements Serializable {
     private boolean checkIfPlayerIsWinning(int currentPlayerScore) {
 
         int player2Score = this.scoreManager.getPlayer2Score();
-        if(currentPlayerScore>player2Score){
-            return true;
-        }else return false;
+        return currentPlayerScore > player2Score;
     }
 
     // Initialize the game state

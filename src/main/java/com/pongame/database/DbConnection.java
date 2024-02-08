@@ -11,7 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class DbConnection {
-    private static Connection connection;
+    public static Connection connection;
 
     private DbConnection() {
         initializeDatabase(connection);

@@ -1,17 +1,23 @@
 package com.pongame.graphics;
 
+import com.pongame.dao.GameDAO;
 import com.pongame.game.Game;
+import com.pongame.interfaces.IGameDAO;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.Serializable;
 
+import static com.pongame.database.DbConnection.connection;
+
 public class InputHandler implements KeyListener, Serializable {
     private final Game game;
     private final GamePanel gamePanel;
+    private IGameDAO gameDAO;
 
     public InputHandler(Game game, GamePanel gamePanel) {
         this.game = game;
+        this.gameDAO=new GameDAO(connection);
         this.gamePanel = gamePanel;
     }
 
@@ -51,7 +57,7 @@ public class InputHandler implements KeyListener, Serializable {
             if (e.getKeyCode() == KeyEvent.VK_Q) {
                 System.out.println("Q PRESSED");
                 game.endGame();
-                game.saveGameToDatabase();
+                game.saveGameToDatabase(this.gameDAO);
             }
 
         } else if (gamePanel instanceof GamePanel) {

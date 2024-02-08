@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import com.pongame.interfaces.IPlayerDAO;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class PlayerDAO implements IPlayerDAO {
     private Connection connection;
@@ -17,12 +16,10 @@ public class PlayerDAO implements IPlayerDAO {
 
     public boolean createPlayer(Player player) {
         String sql = "INSERT INTO Player (name, birthday, password) VALUES (?, ?, ?)";
-        // Hash the password
-        String hashedPassword = BCrypt.hashpw(player.getPassword(), BCrypt.gensalt());
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, player.getName());
             preparedStatement.setString(2, player.getBirthday());
-            preparedStatement.setString(3, hashedPassword);
+            preparedStatement.setString(3, player.getPassword());
 
             preparedStatement.executeUpdate();
             return true;
@@ -33,22 +30,19 @@ public class PlayerDAO implements IPlayerDAO {
     }
 
     public Player authenticatePlayer(String name, String password) {
-        String sql = "SELECT * FROM Player WHERE name = ?";
-
+        String sql = "SELECT * FROM Player WHERE name = ? AND password = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, name);
+            preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                String storedPassword = resultSet.getString("password");
-                if (BCrypt.checkpw(password, storedPassword)) {
-                    int id = resultSet.getInt("Id");
-                    String playerName = resultSet.getString("name");
-                    String playerBirthday = resultSet.getString("birthday");
-                    Player player = new Player(playerName, playerBirthday, null);
-                    player.setId(id);
-                    return player;
-                }
+                int id = resultSet.getInt("Id");
+                String playerName = resultSet.getString("name");
+                String playerBirthday = resultSet.getString("birthday");
+                Player player = new Player(playerName, playerBirthday, null);
+                player.setId(id);
+                return player;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,9 +53,8 @@ public class PlayerDAO implements IPlayerDAO {
 
     public boolean changePassword(int playerId, String newPassword) {
         String sql = "UPDATE Player SET password = ? WHERE Id = ?";
-        String hashedNewPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, hashedNewPassword);
+            preparedStatement.setString(1, newPassword);
             preparedStatement.setInt(2, playerId);
 
             int rowsUpdated = preparedStatement.executeUpdate();
