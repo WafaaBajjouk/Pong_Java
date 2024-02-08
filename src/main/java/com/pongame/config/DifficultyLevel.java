@@ -2,8 +2,8 @@ package com.pongame.config;
 
 public enum DifficultyLevel {
     SLOW(1, 20),
-    MEDIUM(2, 10),
-    FAST(3, 25);
+    MEDIUM(2, 30),
+    FAST(3, 40);
     private final int ballSpeed;
     private final int paddleSpeed;
 
